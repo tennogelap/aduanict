@@ -1,0 +1,65 @@
+body{
+    background-color: #ccc;
+    font-family: Arial;
+}
+h1{
+    color:darkblue;
+    font-size: 60px;
+    border-bottom: 1px solid #999;
+    margin-bottom: 0;
+}
+
+h6{
+    color:red;
+    font-size: 20px;
+    border-bottom: 1px dashed;
+    font-family: "Tahoma";
+}
+
+table {
+    border: #5cff84;
+    width: 100%;
+}
+
+th{
+    color: #ff6107;
+}
+
+.pertama {
+    width: 50%;
+    float: left;
+}
+
+.kedua {
+    width: 50%;
+    float: right;
+    border: 1 solid;
+    background-color: #5cff84;
+}
+
+ul{
+    width:100%;
+    list-style-type: circle;
+}
+li{
+    color: #0056ff;
+}
+
+li.highlight{
+    color:red;
+}
+li sup {
+    color: green;
+    font-size: 12px;
+}
+
+.MyClass li{
+    color: brown;
+}
+
+.ul2 {
+    position: absolute;
+    top: 60px;
+    right:0px;
+    clear: both;
+}

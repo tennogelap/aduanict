@@ -1,0 +1,14 @@
+.userProfile {
+    background-color: #f8efc0;
+}
+
+@media (max-width: 500px) {
+    .form-control-static {
+        padding-top: 0px;
+        width: 100%;
+        text-overflow: ellipsis;
+    }
+}
+.nav-tabs {
+    margin-bottom: 15px;
+}
