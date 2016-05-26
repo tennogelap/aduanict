@@ -23,4 +23,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Relationship: 1 user has many Complain
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Complain');
+    }
+    public function verify_user_pk()
+    {
+        return $this->belongsTo('App\User');
+    }
+    public function attachment_pk()
+    {
+        return $this->morphMany('App\ComplainAttachment','attachable');
+    }
 }

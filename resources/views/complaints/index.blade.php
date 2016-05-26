@@ -38,15 +38,15 @@
                 </tr>
                 @foreach($complains as $complain)
                 <tr>
-                    <td>{{$complain->EMP_ID_ADUAN}}</td>
-                    <td>{{$complain->ADUAN_ID}}</td>
-                    <td>{{str_limit($complain->ADUAN,50)}}</td>
-                    <td>{{$complain->TKH_ADUAN}}</td>
+                    <td>{{ is_null($complain->user_emp_id) ? $complain->register_user_id : $complain->user_emp_id }}</td>
+                    <td>{{$complain->complain_id}}</td>
+                    <td>{{str_limit($complain->complain_description,50)}}</td>
+                    <td>{{$complain->created_at}}</td>
                     <td><span class="label label-primary">Baru</span></td>
-                    <td>{{$complain->EMP_ID_TINDAK}}</td>
+                    <td>{{$complain->action_emp_id}}</td>
                     <td>
-                        {!! Form::open(array('route' => ['complain.destroy',$complain->ADUAN_ID],'method'=>'delete', 'class'=>"form-horizontal")) !!}
-                            <a href="{{route('complain.edit',$complain->ADUAN_ID)}}" class="btn btn-warning">
+                        {!! Form::open(array('route' => ['complain.destroy',$complain->complain_id],'method'=>'delete', 'class'=>"form-horizontal")) !!}
+                            <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
                                 <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
                             <button type="submit" class="btn btn-danger"><span  class="glyphicon glyphicon-trash"></span> Padam</button>
                         {!! Form::close() !!}

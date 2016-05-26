@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ComplainCategory;
+use App\ComplainSource;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -34,10 +36,14 @@ class ComplainController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $users = User::where('id','!=',Auth::user()->id)->lists('name','id');
-        $users = array(''=>'Sila buat pilihan') + $users->all();
-        return view('complaints/create',compact('users'));
+    {   //user list/dropdown
+        $users = $this->get_users();
+        //complain category list/dropdown
+        $complain_categories = $this->get_complain_categories();
+        //complain sources list/dropdown
+        $complain_sources = $this->get_complain_sources();
+
+        return view('complaints/create',compact('users','complain_categories','complain_sources'));
     }
 
     /**
@@ -50,17 +56,17 @@ class ComplainController extends Controller
     {
 //      dd($request->all());
 
-        $aduan   = $request->ADUAN;
-        $login_daftar   = $request->LOGIN_DAFTAR;
+        $aduan   = $request->COMPLAIN_DESCRIPTION;
+        $login_daftar   = $request->REGISTER_EMP_ID;
         if (empty($login_daftar))
         {
             $login_daftar = Auth::user()->id;
         }
         //create new record
         $complain = new Complain();
-        $complain->EMP_ID_ADUAN = Auth::user()->id;
-        $complain->ADUAN        = $aduan;
-        $complain->LOGIN_DAFTAR = $login_daftar;
+        $complain->REGISTER_EMP_ID = Auth::user()->id;
+        $complain->COMPLAIN_DESCRIPTION        = $aduan;
+        $complain->REGISTER_EMP_ID = $login_daftar;
 
         //save
         $complain->save();
@@ -88,8 +94,10 @@ class ComplainController extends Controller
      */
     public function edit($id)
     {
+        //complain category list/dropdown
+        $complain_categories = $this->get_complain_categories();
         $complain = Complain::find($id);
-        return view('complaints/edit',compact('complain'));
+        return view('complaints/edit',compact('complain','complain_categories'));
     }
 
     /**
@@ -102,12 +110,12 @@ class ComplainController extends Controller
     public function update(ComplainRequest $request, $id)
     {
 //       dd($request->all());
-        $butiran_aduan = $request->ADUAN;
-        $butiran_tindakan = $request->TINDAKAN;
+        $butiran_aduan = $request->COMPLAIN_DESCRIPTION;
+        $butiran_tindakan = $request->ACTION_COMMENT;
         //udate record
         $complain = Complain::find($id);
-        $complain->ADUAN = $butiran_aduan;
-        $complain->TINDAKAN = $butiran_tindakan;
+        $complain->COMPLAIN_DESCRIPTION = $butiran_aduan;
+        $complain->ACTION_COMMENT = $butiran_tindakan;
 
         //save
         $complain->save();
@@ -132,5 +140,24 @@ class ComplainController extends Controller
 
         //after success, route to index
         return back();
+    }
+    //get data
+    function get_complain_categories (){
+
+        $complain_categories = ComplainCategory::lists('description','category_id');
+        $complain_categories = array(''=>'Pilih Kategori')+$complain_categories ->all();
+        return $complain_categories;
+    }
+    function get_complain_sources (){
+
+        $complain_sources = ComplainSource::lists('description','source_id');
+        $complain_sources = array(''=>'Pilih Kaedah')+$complain_sources ->all();
+        return $complain_sources;
+    }
+    function get_users (){
+
+        $users = User::where('id','!=',Auth::user()->id)->lists('name','id');
+        $users = array(''=>'Sila buat pilihan') + $users->all();
+        return $users;
     }
 }

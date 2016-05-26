@@ -14,7 +14,7 @@ class CreateComplainsTable extends Migration
     {
         Schema::create('complains', function (Blueprint $table) {
             $table->increments('complain_id');
-            $table->string('id_pengguna', 10);
+            $table->string('register_user_id', 10);
             $table->string('user_emp_id',10)->nullable();
             $table->text('complain_description');
             $table->smallInteger('complain_level_id')->unsigned();
@@ -32,7 +32,7 @@ class CreateComplainsTable extends Migration
             $table->string('action_emp_id',10)->nullable();
             $table->timestamp('action_date')->nullable();
             $table->text('reference')->nullable();
-            $table->string('verify_emp_id',10);
+            $table->string('verify_emp_id',10)->nullable();
             $table->timestamp('verify_date')->nullable();
             $table->text('user_comment')->nullable();
             $table->smallInteger('verify_status')->nullable()->unsigned();
