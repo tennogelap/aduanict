@@ -11,9 +11,10 @@
     <link href="{{ URL::asset('css/bootstrap.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/style.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/chosen.min.css')}}" rel="stylesheet">
-    {{--<link href="css/bootstrap.min.css" rel="stylesheet">--}}
-    {{--<link href="css/style.css" rel="stylesheet">--}}
 
+    <script>
+        var base_url = '{!! url('/') !!}'
+    </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -88,5 +89,9 @@
 </html>
 
 <script type="text/javascript">
-    $(".chosen").chosen();
+    $( document ).ready(function() {
+        $(".chosen").chosen();
+    });
 </script>
+
+@yield('script')

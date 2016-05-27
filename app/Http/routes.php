@@ -17,9 +17,11 @@
 Route::get('/', function(){
             return view('welcome');
         });
+Route::get('complain/locations','ComplainController@get_locations');
 
 Route::resource('complain','ComplainController');
 
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+

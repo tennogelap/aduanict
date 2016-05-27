@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\AssetsLocation;
+use App\Branch;
 use App\ComplainCategory;
 use App\ComplainSource;
 use Illuminate\Http\Request;
@@ -42,8 +44,12 @@ class ComplainController extends Controller
         $complain_categories = $this->get_complain_categories();
         //complain sources list/dropdown
         $complain_sources = $this->get_complain_sources();
+        //complain location list/dropdown
+        $locations = $this->get_locations();
+        //complain branch list/dropdown
+        $branchs = $this->get_branch();
 
-        return view('complaints/create',compact('users','complain_categories','complain_sources'));
+        return view('complaints/create',compact('users','complain_categories','complain_sources','locations','branchs'));
     }
 
     /**
@@ -159,5 +165,40 @@ class ComplainController extends Controller
         $users = User::where('id','!=',Auth::user()->id)->lists('name','id');
         $users = array(''=>'Sila buat pilihan') + $users->all();
         return $users;
+    }
+    function get_locations (){
+        $branch_id = \Request::input('branch_id');
+
+        if (!empty($branch_id))
+        {
+            $locations= AssetsLocation::where('branch_id',$branch_id)->lists('location_description','location_id');
+        }
+        else
+        {
+            $locations= AssetsLocation::lists('location_description','location_id');
+        }
+//        $locations= AssetsLocation::lists('location_description','location_id');
+        $locations = array(''=>'Pilih lokasi') + $locations->all();
+        return $locations;
+    }
+    function get_assets (){
+        $lokasi_id = \Request::input('lokasi_id');
+
+        if (!empty($lokasi_id))
+        {
+            $assets= Assets::where('lokasi_id',$lokasi_id)->lists('ict_description','ict_no');
+        }
+        else
+        {
+            $assets= Assets::lists('ict_description','ict_no');
+        }
+//        $locations= AssetsLocation::lists('location_description','location_id');
+        $assets = array(''=>'Pilih Aset') + $assets->all();
+        return $assets;
+    }
+    function get_branch (){
+        $branchs= Branch::lists('branch_description','id');
+        $branchs = array(''=>'Pilih cawangan') + $branchs->all();
+        return $branchs;
     }
 }

@@ -88,7 +88,7 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => env('DB_PREFIX', 'forge'),
-            'schema' => 'ppzdev',
+            'schema' => 'ppz',
         ],
 
     ],

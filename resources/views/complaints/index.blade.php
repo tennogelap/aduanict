@@ -38,11 +38,33 @@
                 </tr>
                 @foreach($complains as $complain)
                 <tr>
-                    <td>{{ is_null($complain->user_emp_id) ? $complain->register_user_id : $complain->user_emp_id }}</td>
+                    {{--<td>{{ is_null($complain->user_emp_id) ? $complain->register_user_id : $complain->user_emp_id }}</td>--}}
+                    <td>
+                        @if($complain->user_fk)
+                            {{ $complain->user_fk->name }}
+                         @else
+                            {{ $complain->register_user_id }}
+                         @endif
+                    </td>
                     <td>{{$complain->complain_id}}</td>
                     <td>{{str_limit($complain->complain_description,50)}}</td>
                     <td>{{$complain->created_at}}</td>
-                    <td><span class="label label-primary">Baru</span></td>
+                    <td>
+                        @if($complain->complain_status_id==1)
+                            <span class="label label-warning">Baru</span>                        @elseif($complain->complain_status_id=2)
+                        @elseif($complain->complain_status_id==2)
+                            <span class="label label-primary">Tindakan</span>
+                        @elseif($complain->complain_status_id==3)
+                            <span class="label label-primary">Sahkan (P)</span>
+                        @elseif($complain->complain_status_id==4)
+                            <span class="label label-primary">Sahkan (H)</span>
+                        @elseif($complain->complain_status_id==5)
+                            <span class="label label-primary">Selesai</span>
+                        @elseif($complain->complain_status_id==6)
+                            <span class="label label-primary">Dihapuskan</span>
+                        @endif
+                        {{ $complain->complain_status_id }}
+                    </td>
                     <td>{{$complain->action_emp_id}}</td>
                     <td>
                         {!! Form::open(array('route' => ['complain.destroy',$complain->complain_id],'method'=>'delete', 'class'=>"form-horizontal")) !!}
