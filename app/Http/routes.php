@@ -19,9 +19,21 @@ Route::get('/', function(){
         });
 Route::get('complain/locations','ComplainController@get_locations');
 
+Route::get('complain/{id}/actions','ComplainController@action')->name('complain.action');
+Route::put('complain/{id}','ComplainController@update_action')->name('complain.update_action');
+
 Route::resource('complain','ComplainController');
 
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+/** ------------------------------------------
+ *  Admin Routes
+ *  ------------------------------------------
+ */
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('users', 'Admin\AdminUsersController');
+    Route::resource('roles', 'Admin\AdminRolesController');
+    Route::resource('permissions', 'Admin\AdminPermissionsController');
+});

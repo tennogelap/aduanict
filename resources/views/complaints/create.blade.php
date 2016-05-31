@@ -15,8 +15,8 @@
                         <div class="col-sm-2 col-xs-10">
                             <p class="form-control-static">{{date('d/m/y')}}</p>
                         </div>
-                    </div>
-                    <div class="form-group">
+                    {{--</div>
+                    <div class="form-group">--}}
                        <label class="col-sm-2 col-xs-2 control-label">Masa:</label>
                         <div class="col-sm-2 col-xs-10">
                             <p class="form-control-static">{{date('h:i:s a')}}</p>
@@ -25,73 +25,55 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Pengadu:</label>
                         <div class="col-sm-3">
-                            <p class="form-control-static">{{ Auth::user()->name }}</p>
+                            <p class="form-control-static" >{{ Auth::user()->name }}</p>
                         </div>
                         <label class="col-sm-2 control-label">No. Pekerja:</label>
                         <div class="col-sm-2">
-                            <p class="form-control-static">{{ Auth::user()->id }}</p>
+                            <p class="form-control-static">{{ Auth::user()->emp_id }}</p>
+                            <input type="hidden" name="register_user_id" value="{{ Auth::user()->emp_id }}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Bagi Pihak</label>
                         <div class="col-sm-6">
                             <div class="input-group">
-
-                                {!! Form::select('register_user_id',$users,'',['class'=> 'form-control chosen']);!!}
-
-                                {{--<input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bagiPihak">
-                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                    </button>
-                                </span>--}}
+                                {!! Form::select('user_emp_id',$users,'',['class'=> 'form-control chosen'])!!}
                             </div><!-- /input-group -->
                         </div>
                     </div>
-                <div class="form-group">
-                    <label class="col-sm-2 col-xs-12 control-label">Kategori</label>
-                    <div class="col-sm-3 col-xs-10">
-                        {!! Form::select('complain_category_id',$complain_categories,'',['class'=> 'form-control chosen','id'=>'complain_category_id']);!!}
-                    </div>
-                    <label class="col-sm-1 col-xs-2 control-label">
-                        <span class="pull-left symbol"> * </span>
-                    </label>
-
-                </div>
-                    <div class="form-group hide_by_category">
-                        <label class="col-sm-2 col-xs-12 control-label">Cawangan</label>
+                    <div class="form-group {{$errors->has('branch_id') ? 'has-error' : false}}">
+                        <label class="col-sm-2 col-xs-12 control-label">Kategori<span class="symbol"> * </span>                        </label>
                         <div class="col-sm-3 col-xs-10">
-                            {!! Form::select('branch_id',$branchs,'',['class'=> 'form-control chosen','id'=>'branch_id']);!!}
-                        </div>
-                        <label class="col-sm-1 col-xs-2 control-label">
-                            <span class="pull-left symbol"> * </span>
-                        </label>
-
-                    </div><div class="form-group hide_by_category">
-                        <label class="col-sm-2 col-xs-12 control-label">Lokasi</label>
-                        <div class="col-sm-3 col-xs-10">
-                            {!! Form::select('lokasi_id',$locations,'',['class'=> 'form-control chosen','id'=>'lokasi_id']);!!}
-                        </div>
-                        <label class="col-sm-1 col-xs-2 control-label">
-                            <span class="pull-left symbol"> * </span>
-                        </label>
-
-                    </div>
-                    <div class="form-group hide_by_category">
-                        <label class="col-sm-2 control-label">Aset</label>
-                        <div class="col-sm-3 col-xs-10">
-                            {!! Form::select('ict_no',[],'',['class'=> 'form-control chosen','id'=>'ict_no']);!!}
+                            {!! Form::select('complain_category_id',$complain_categories,'',['class'=> 'form-control chosen','id'=>'complain_category_id'])!!}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Kaedah</label>
+                    <div class="form-group hide_by_category {{$errors->has('branch_id') ? 'has-error' : false}}">
+                        <label class="col-sm-2 col-xs-12 control-label">Cawangan<span class="symbol"> * </span></label>
+                        <div class="col-sm-3 col-xs-10">
+                            {!! Form::select('branch_id',$branchs,'',['class'=> 'form-control chosen','id'=>'branch_id'])!!}
+                        </div>
+                    </div>
+                    <div class="form-group hide_by_category {{$errors->has('lokasi_id') ? 'has-error' : false}}">
+                        <label class="col-sm-2 col-xs-12 control-label">Lokasi<span class="symbol"> * </span></label>
+                        <div class="col-sm-3 col-xs-10">
+                            {!! Form::select('lokasi_id',$locations,'',['class'=> 'form-control chosen','id'=>'lokasi_id'])!!}
+                        </div>
+                    </div>
+                    <div class="form-group hide_by_category {{$errors->has('ict_no') ? 'has-error' : false}}">
+                        <label class="col-sm-2 control-label">Aset<span class="symbol"> * </span></label>
+                        <div class="col-sm-3 col-xs-10">
+                            {!! Form::select('ict_no',$assets,'',['class'=> 'form-control chosen','id'=>'ict_no'])!!}
+                        </div>
+                    </div>
+                    <div class="form-group {{$errors->has('complain_source_id') ? 'has-error' : false}}">
+                        <label class="col-sm-2 control-label">Kaedah<span class="symbol"> * </span></label>
                         <div class="col-sm-3">
-                            {!! Form::select('complain_source_id',$complain_sources,'',['class'=> 'form-control chosen']);!!}
+                            {!! Form::select('complain_source_id',$complain_sources,'',['class'=> 'form-control chosen'])!!}
 
                         </div>
                     </div>
                     <div class="form-group {{$errors->has('complain_description') ? 'has-error' : false}}">
-                        <label class="col-sm-2 control-label">Aduan</label>
+                        <label class="col-sm-2 control-label">Aduan<span class="symbol"> * </span></label>
                         <div class="col-sm-6">
                             <textarea class="form-control" name='complain_description' rows="3">{{old('complain_description')}}</textarea>
                         </div>
@@ -147,7 +129,7 @@
                 var branch_id = $(this).val();
                 get_locations_by_branch(branch_id);
             });
-            
+
             $( "#lokasi_id" ).change(function() {
                 var lokasi_id = $(this).val();
             });
@@ -164,8 +146,11 @@
                 {
                     $('.hide_by_category').show();
                 }
-            }
+                //when validation error after processing form, reinitialize
+                //start code
 
+                //end code
+            }
 
             //function untuk panggilan location ikut branch ajax
             function get_locations_by_branch(branch_id)

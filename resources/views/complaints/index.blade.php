@@ -50,26 +50,22 @@
                     <td>{{str_limit($complain->complain_description,50)}}</td>
                     <td>{{$complain->created_at}}</td>
                     <td>
-                        @if($complain->complain_status_id==1)
-                            <span class="label label-warning">Baru</span>                        @elseif($complain->complain_status_id=2)
-                        @elseif($complain->complain_status_id==2)
-                            <span class="label label-primary">Tindakan</span>
-                        @elseif($complain->complain_status_id==3)
-                            <span class="label label-primary">Sahkan (P)</span>
-                        @elseif($complain->complain_status_id==4)
-                            <span class="label label-primary">Sahkan (H)</span>
-                        @elseif($complain->complain_status_id==5)
-                            <span class="label label-primary">Selesai</span>
-                        @elseif($complain->complain_status_id==6)
-                            <span class="label label-primary">Dihapuskan</span>
-                        @endif
-                        {{ $complain->complain_status_id }}
+                        {{--tengok model function mutator--}}
+                        {!! $complain->status !!}
                     </td>
                     <td>{{$complain->action_emp_id}}</td>
                     <td>
                         {!! Form::open(array('route' => ['complain.destroy',$complain->complain_id],'method'=>'delete', 'class'=>"form-horizontal")) !!}
-                            <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
+
+                            @if(Entrust::can('action_complain'))
+                            <a href="{{route('complain.action',$complain->complain_id)}}" class="btn btn-warning">
                                 <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
+                            @elseif (Entrust::can('edit_complain'))
+                                <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
+                            @endif
+
+                        {{-- Letak checking if role!= helpdesk, hide delete button--}}
                             <button type="submit" class="btn btn-danger"><span  class="glyphicon glyphicon-trash"></span> Padam</button>
                         {!! Form::close() !!}
                     </td>

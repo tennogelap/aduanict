@@ -28,15 +28,33 @@ class ComplainRequest extends Request
         switch ($this->method()){
             case 'GET':
             case 'POST': {
-                return['ADUAN' => 'required',];
+                $validation_rules = array('complain_category_id' => 'required',
+                                          'complain_description' => 'required');
+                //exclude Zakat2U and Portal from required validation
+                $aduan_category_exception_value = array('5','6');
+
+                //set required fields
+                $others_field_validation = array(
+                                                'branch_id'=>'required',
+                                                'lokasi_id'=>'required',
+                                                'ict_no'=>'required'
+                                                );
+                //check complain_category_id Not in $aduan_category_exception_value
+                //in_array(field_name, array)
+                if(!in_array($this->complain_category_id,$aduan_category_exception_value))
+                {
+                    $validation_rules = $others_field_validation + $validation_rules;
+                }
+
+                return $validation_rules;
                 }
             case 'PUT':  {
-                return['ADUAN' => 'required',];
+                return['complain_description' => 'required',];
                  }
             default:break;
         }
         /*return [
-            'ADUAN' => 'required',
+            'complain_description' => 'required',
         ];*/
     }
 }
