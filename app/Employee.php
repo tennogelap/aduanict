@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    protected $connection='oracle2';
     protected $table = 'spsm_employee';
-    protected $primaryKey = 'PK_EMP_ID';
+    protected $primaryKey = 'emp_id';
     public $timestamps = false;
 }

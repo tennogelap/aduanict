@@ -37,7 +37,7 @@
                         <label class="col-sm-2 control-label">Bagi Pihak</label>
                         <div class="col-sm-6">
                             <div class="input-group">
-                                {!! Form::select('user_emp_id',$users,'',['class'=> 'form-control chosen'])!!}
+                                {!! Form::select('user_emp_id',$users,'user_emp_id',['class'=> 'form-control chosen','id'=>'user_emp_id'])!!}
                             </div><!-- /input-group -->
                         </div>
                     </div>
@@ -132,6 +132,7 @@
 
             $( "#lokasi_id" ).change(function() {
                 var lokasi_id = $(this).val();
+                get_assets_by_locations(lokasi_id);
             });
 
             //function untuk show hide by category

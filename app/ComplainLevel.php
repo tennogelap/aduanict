@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComplainLevel extends Model
 {
-    protected $table = 'COMPLAINS_LEVEL';
-    protected $primaryKey = 'LEVEL_ID';
+    protected $table = 'complains_level';
+    protected $primaryKey = 'level_id';
     public $timestamps = false;
     /**
      * Relationship: 1 user has many Complain

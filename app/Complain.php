@@ -9,10 +9,15 @@ class Complain extends Model
     protected $table = 'complains';
     protected $primaryKey = 'complain_id';
     protected $fillable = [
-        'user_emp_id', 'complain_description', 'register_user_id',
-        'complain_category_id', 'complain_source_id', 'complain_level_id',
-        'lokasi_id', 'ict_no', 'helpdesk_delay_reason', 'action_comment',
-        'complain_status_id'
+        'complain_id'          , 'register_user_id'  , 'user_emp_id'       ,
+        'complain_description' , 'complain_level_id' , 'complain_source_id',
+        'unit_id'              , 'ict_no'            , 'lokasi_id'         ,
+        'complain_category_id' , 'complain_status_id', 'assign_date'       ,
+        'helpdesk_delay_reason', 'complete_date'     , 'delay_reason'      ,
+        'action_comment'       , 'action_emp_id'     , 'action_date'       ,
+        'reference'            , 'verify_emp_id'     , 'verify_date'       ,
+        'user_comment'         , 'verify_status'     , 'created_at'        ,
+        'updated_at'           , 'deleted_at'        , 'branch_id'
     ];
 
     public function setUserEmpIdAttribute($value)
@@ -53,6 +58,11 @@ class Complain extends Model
                 return '<span class="label label-warning">Dihapuskan</span>';
                 break;
 
+            case 7:
+            case '7':
+                return '<span class="label label-primary">Agihan</span>';
+                break;
+
             default:
                 return '<span class="label label-danger">???</span>';
         }
@@ -63,7 +73,7 @@ class Complain extends Model
      */
     public function user_fk()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Employee');
     }
    public function regUser_fk()
     {
@@ -90,7 +100,8 @@ class Complain extends Model
     {
     return $this->belongsTo('App\ComplainStatus','complain_status_id','status_id');
 
-    }public function complain_unit_fk()
+    }
+    public function complain_unit_fk()
     {
     return $this->belongsTo('App\Unit','unit_id','kod');
     }
@@ -106,5 +117,28 @@ class Complain extends Model
     {
         return $this->belongsTo('App\Asset');
     }
-
+    public function assets_location_fk()
+    {
+        return $this->belongsTo('App\AssetsLocation','lokasi_id','location_id');
+    }
+   public function complain_action_fk()
+    {
+        return $this->hasMany('App\ComplainAction','complain_id','complain_id');
+    }
+  public function branch_fk()
+    {
+        return $this->belongsTo('App\Branch','branch_id','id');
+    }
+    public function employeeR_fk()
+    {
+        return $this->belongsTo('App\Employee','register_user_id','emp_id');
+    }
+    public function employeeU_fk()
+    {
+        return $this->belongsTo('App\Employee','user_emp_id','emp_id');
+    }
+   public function employeeT_fk()
+    {
+        return $this->belongsTo('App\Employee','action_emp_id','emp_id');
+    }
 }

@@ -17,16 +17,19 @@
 Route::get('/', function(){
             return view('welcome');
         });
+//get
 Route::get('complain/locations','ComplainController@get_locations');
-
+Route::get('complain/assign','ComplainController@assign')->name('complain.assign');
+Route::get('complain/{complain}/assign_staff','ComplainController@assign_staff')->name('complain.assign_staff');
 Route::get('complain/{id}/actions','ComplainController@action')->name('complain.action');
-Route::put('complain/{id}','ComplainController@update_action')->name('complain.update_action');
-
-Route::resource('complain','ComplainController');
-
-Route::auth();
-
 Route::get('/home', 'HomeController@index');
+
+//put
+Route::put('complain/assign/{complain}','ComplainController@update_assign_staff')->name('complain.update_assign_staff');
+Route::put('complain/action/{complain}','ComplainController@update_action')->name('complain.update_action');
+Route::put('complain/verify/{complain}','ComplainController@verify')->name('complain.verify');
+Route::resource('complain','ComplainController');
+Route::auth();
 
 /** ------------------------------------------
  *  Admin Routes

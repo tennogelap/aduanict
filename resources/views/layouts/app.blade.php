@@ -49,10 +49,17 @@
                         <a href="#">Tambah Aduan</a>
                     </li>
                     <li class="active">
-                        <a href="#">
+                        <a href="{{url('complain')}}">
                             Senarai Aduan
                         </a>
                     </li>
+                    @role('unit_manager')
+                    <li class="active">
+                        <a href="{{route('complain.assign')}}">
+                            Senarai Agihan
+                        </a>
+                    </li>
+                    @endrole
                     <li class="dropdown">
                         @if(Auth::guest())
                         <li><a href="{{url('/login')}}">Login</a></li>
@@ -77,9 +84,8 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
-
+    @include('flash::message')
     @yield('content')
-
 </div>
 
     @yield('modal')
