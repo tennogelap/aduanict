@@ -32,7 +32,7 @@
         <div class="form-group {{$errors->has('branch_id') ? 'has-error' : false}}">
             <label class="col-sm-2 col-xs-12 control-label">Kategori<span class="symbol"> * </span>                        </label>
             <div class="col-sm-3 col-xs-10">
-                @if($exclude_category!='Y')
+                @if(!empty($exclude_category) && $exclude_category!='Y')
                     {!! Form::select('complain_category_id',$complain_categories,$complain->complain_category_id.'-'.$complain->unit_id,['class'=> 'form-control chosen','id'=>'complain_category_id'])!!}
                 @else
                     <p class="form-control-static">{{$complain->complain_category_fk->description}}</p>

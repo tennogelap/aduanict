@@ -8,6 +8,10 @@ use App\ComplainAction;
 use App\ComplainCategory;
 use App\ComplainSource;
 use App\ComplainStatus;
+use App\Events\ComplainCreatedEvent;
+use App\Events\ComplainHelpdeskActionEvent;
+use App\Events\ComplainUserVerifyEvent;
+use Event;
 use App\Unit;
 use App\Asset;
 use Illuminate\Http\Request;
@@ -128,7 +132,9 @@ class ComplainController extends Controller
         }
 
 //       save
-        $user = Complain::create($input); // alternative save
+        $complain = Complain::create($input); // alternative save
+
+        Event::fire(new ComplainCreatedEvent($complain));
 
         //after success, route to index
         if($request->ajax())
@@ -373,6 +379,10 @@ class ComplainController extends Controller
 
         $complain_action->save();
         //after success, route to index
+
+        //kalau helpdesk update action assign, event send email kepada Unit manager
+        Event::fire(new ComplainUserVerifyEvent($complain));
+
         return back();
     }
     /*
@@ -392,6 +402,10 @@ class ComplainController extends Controller
         else
         {
             $request['complain_status_id'] = $request->complain_status_id;
+            if($request->complain_status_id==3)
+            {
+                $request['action_emp_id'] =$this->user_id;
+            }
         }
 
         if($request['complain_status_id']==7)
@@ -413,6 +427,9 @@ class ComplainController extends Controller
         $complain_action ->complain_status_id=$request['complain_status_id'];
 
         $complain_action->save();
+
+        //kalau helpdesk update action assign, event send email kepada Unit manager
+        Event::fire(new ComplainHelpdeskActionEvent($complain));
 
         //after success, route to index
         return back();

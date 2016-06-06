@@ -38,6 +38,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\User');
     }
+    public function userEmp_fk()
+    {
+        return $this->belongsTo('App\Employee','emp_id','emp_id');
+    }
     public function attachment_pk()
     {
         return $this->morphMany('App\ComplainAttachment','attachable');

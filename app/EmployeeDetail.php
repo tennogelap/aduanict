@@ -4,15 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class EmployeeDetail extends Model
 {
     protected $connection='oracle2';
-    protected $table = 'spsm_employee';
+    protected $table = 'spsm_employee_detail';
     protected $primaryKey = 'emp_id';
     public $timestamps = false;
 
-    public function empMaster_fk()
+    public function empDetail_fk()
     {
-        return $this->belongsTo('App\EmployeeDetail','emp_id','emp_id');
+        return $this->belongsTo('App\Employee','emp_id','emp_id');
     }
 }

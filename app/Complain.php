@@ -75,11 +75,11 @@ class Complain extends Model
     {
         return $this->belongsTo('App\Employee');
     }
-   public function regUser_fk()
+    public function regUser_fk()
     {
         return $this->belongsTo('App\User','register_user_id','emp_id');
     }
-  public function onBehalf_fk()
+    public function onBehalf_fk()
     {
         return $this->belongsTo('App\User','user_emp_id','emp_id');
     }
@@ -98,16 +98,15 @@ class Complain extends Model
     }
     public function complain_status_fk()
     {
-    return $this->belongsTo('App\ComplainStatus','complain_status_id','status_id');
-
+        return $this->belongsTo('App\ComplainStatus','complain_status_id','status_id');
     }
     public function complain_unit_fk()
     {
-    return $this->belongsTo('App\Unit','unit_id','kod');
+        return $this->belongsTo('App\Unit','unit_id','kod');
     }
     public function action_user_fk()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','action_emp_id','emp_id');
     }
     public function verify_user_fk()
     {
@@ -121,11 +120,11 @@ class Complain extends Model
     {
         return $this->belongsTo('App\AssetsLocation','lokasi_id','location_id');
     }
-   public function complain_action_fk()
+    public function complain_action_fk()
     {
         return $this->hasMany('App\ComplainAction','complain_id','complain_id');
     }
-  public function branch_fk()
+    public function branch_fk()
     {
         return $this->belongsTo('App\Branch','branch_id','id');
     }
@@ -137,7 +136,7 @@ class Complain extends Model
     {
         return $this->belongsTo('App\Employee','user_emp_id','emp_id');
     }
-   public function employeeT_fk()
+    public function employeeT_fk()
     {
         return $this->belongsTo('App\Employee','action_emp_id','emp_id');
     }

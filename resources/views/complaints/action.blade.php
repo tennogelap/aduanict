@@ -4,7 +4,7 @@
 
     {{--include exit from--}}
     @if($complain->complain_status_id<=2)
-        @include('complaints.partials.edit_form')
+        @include('complaints.partials.edit_form',['exclude_category'=>'N'])
     @endif
 
     {{--show--}}

@@ -78,6 +78,10 @@ class ComplainRequest extends Request
                                 'action_comment' => 'required'
                             );
                         }
+                        else
+                        {
+                            $validation_rules=array();
+                        }
                     }
                     return $validation_rules;
                  }
