@@ -56,8 +56,18 @@ class ComplainRequest extends Request
                     if($route_name=='complain.update') {
                         //kemaskini validation rules
                         $validation_rules = array(
+                            'complain_category_id'=>'required',
                             'lokasi_id' => 'required',
                             'ict_no' => 'required');
+
+                        if($this->exclude_category=='Y')
+                        {
+                            array_pull($validation_rules,'complain_category_id');
+                        }
+                        /* remove item from array
+                         * array_pull(array_name, value_name) .. e.g:
+                         * array_pull($validation_rules,'complain_category_id');
+                         * */
                     }
                     elseif ($route_name=='complain.update_action')
                     {

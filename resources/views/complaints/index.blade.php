@@ -29,7 +29,7 @@
                 <tr>
                     <th>Pengadu</th>
                     <th>Aduan id</th>
-                    <th>Aduan</th>
+                    <th>Aduan / Tindakan</th>
                     <th>Tarikh</th>
                     <th>Status</th>
                     <th>Tindakan</th>
@@ -47,7 +47,9 @@
                          @endif
                     </td>
                     <td>{{$complain->complain_id}}</td>
-                    <td>{{str_limit($complain->complain_description,50)}}</td>
+                    <td>Aduan: {{str_limit($complain->complain_description,50)}}<br><hr>
+                        Tindakan: {{$complain->action_comment}}
+                    </td>
                     <td>{{$complain->created_at}}</td>
                     <td>
                         {{--tengok model function mutator--}}
@@ -65,14 +67,20 @@
                             @if(Entrust::can('action_complain'))
                             <a href="{{route('complain.action',$complain->complain_id)}}" class="btn btn-warning">
                                 <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
-                            @elseif (Entrust::can('edit_complain'))
+                            @elseif (Entrust::can('edit_complain') && $complain->complain_status_id==1)
                                 <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
                                     <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
+                            @elseif (Entrust::can('verify_complain_action') && $complain->complain_status_id==3)
+                                <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-edit"></span> Pengesahan</a>
+                            @elseif (Entrust::can('technical_action_complain'))
+                                <a href="{{route('complain.technical_action',$complain->complain_id)}}" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-edit"></span> Tindakan</a>
                             @endif
 
                         {{-- Letak checking if role!= helpdesk, hide delete button--}}
                             @if(Entrust::can('delete_complain') AND $complain->complain_status_id==1)
-                                <button type="submit" class="btn btn-danger"><span  class="glyphicon glyphicon-trash"></span> Padam</button>
+                                <button type="button" class="btn btn-danger" data-destroy><span class="glyphicon glyphicon-trash"></span> Padam</button>
                             @endif
                         {!! Form::close() !!}
                     </td>

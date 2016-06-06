@@ -14,14 +14,12 @@
                 @foreach($complain_actions as $complain_action)
                 <tr>
                     <td>
-                        <p class="form-control-static">{{$complain_action->created_at}}</p>
-                    </td>
-                    <td>
                         <p class="form-control-static" >
                             @if($complain_action->user_action)
                                 {{ $complain_action->user_action->short_name }}:
                             @endif
-                            <br>{{$complain_action->action_comment}}</p>
+                    <td>
+                        <p class="form-control-static">{{$complain_action->created_at}}</p>
                     </td>
                     <td>
                         <p class="form-control-static" >
@@ -32,11 +30,7 @@
                         </p>
                     </td>
                     <td>
-                        <p class="form-control-static" >
-                            @if($complain_action->pengadu_fk)
-                                {{ $complain_action->pengadu_fk->short_name }}:
-                            @endif
-                            <br>{{$complain_action->user_comment}}</p>
+                        {{$complain_action->action_comment}}
                     </td>
                 </tr>
                 @endforeach

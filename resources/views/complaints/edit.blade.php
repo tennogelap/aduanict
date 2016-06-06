@@ -6,6 +6,8 @@
 
     @if ($complain->complain_status_id==1)
         @include('complaints.partials.edit_form')
+    @elseif($complain->complain_status_id==2)
+        @include('complaints.technical_action')
     @elseif($complain->complain_status_id==3)
         @include('complaints.partials.verify_form')
         @include('complaints.partials.complain_action_log')

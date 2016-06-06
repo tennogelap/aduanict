@@ -11,7 +11,7 @@
     <link href="{{ URL::asset('css/bootstrap.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/style.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/chosen.min.css')}}" rel="stylesheet">
-
+    <link href="{{ URL::asset('css/sweetalert.css')}}" rel="stylesheet">
     <script>
         var base_url = '{!! url('/') !!}'
     </script>
@@ -95,6 +95,8 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="{{ URL::asset('js/bootstrap.min.js')}}"></script>
 <script src="{{ URL::asset('js/chosen.jquery.min.js')}}"></script>
+<script src="{{ URL::asset('js/sweetalert.min.js')}}"></script>
+<script src="{{ URL::asset('js/ajax_helpers.js')}}"></script>
 {{--<script src="js/bootstrap.min.js"></script>--}}
 </body>
 </html>
@@ -102,6 +104,9 @@
 <script type="text/javascript">
     $( document ).ready(function() {
         $(".chosen").chosen();
+
+//      cool alert message function
+//      swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
     });
 </script>
 

@@ -87,7 +87,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <input type="hidden" name="verify_status" value="{{ old('verify_status') }}" id="verify_status"/>
+                <input type="hidden" name="submit_type" value="{{ old('submit_type') }}" id="submit_type"/>
                 @if($complain->complain_status_id==3)
                     <button type="button" id="submit_finish" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-ok"></span> Selesai</a>
                         <button type="button" id="submit_reject" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-remove"></span> Tidak Selesai</a>

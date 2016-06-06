@@ -1,9 +1,13 @@
-@if ($complain->complain_status_id==4)
+@if ($complain->complain_status_id==2)
     @role('unit_manager')
     <div class="alert alert-warning">
         <h3>Aduan telah diagihkan kepada kakitangan.</h3>
     </div>
     @endrole
+@elseif ($complain->complain_status_id==3)
+    <div class="alert alert-warning">
+        <h3>Aduan menunggu pengesahan dari {{$complain->onBehalf_fk->name}}</h3>
+    </div>
 @elseif ($complain->complain_status_id==4)
     <div class="alert alert-warning">
         <h3>Aduan menunggu pengesahan dari Helpdesk</h3>

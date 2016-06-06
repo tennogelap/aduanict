@@ -178,6 +178,7 @@
                         $.each(location_data, function(key, value) {
                             $("#lokasi_id").append("<option value='"+ key +"'>" + value + "</option>");
                         });
+                        $("#lokasi_id").val('');
                         $("#lokasi_id").trigger("chosen:updated");
                     }
                 });
@@ -193,21 +194,23 @@
                     dataType: "json",
                     data:
                     {
-                        ict_no : ict_no
+                        lokasi_id : location_id
                     },
                     beforeSend: function()
                     {
                         //////////////////////////////
                     },
-                    success: function (location_data)
+                    success: function (assets_data)
                     {
                         $("#ict_no").empty();
 
                         //create a new dropdown option using the data provided by json object
 
-                        $.each(location_data, function(key, value) {
+                        $.each(assets_data, function(key, value) {
                             $("#ict_no").append("<option value='"+ key +"'>" + value + "</option>");
                         });
+                        $("#ict_no").val('');
+                        $("#ict_no").trigger("chosen:updated");
                     }
                 });
 
