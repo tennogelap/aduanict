@@ -83,7 +83,6 @@ class Complain extends Model
     {
         return $this->belongsTo('App\User','user_emp_id','emp_id');
     }
-
     public function complain_level_fk()
     {
         return $this->belongsTo('App\ComplainLevel','complain_level_id','level_id');
@@ -139,5 +138,9 @@ class Complain extends Model
     public function employeeT_fk()
     {
         return $this->belongsTo('App\Employee','action_emp_id','emp_id');
+    }
+    public function attachments()
+    {
+        return $this->morphMany('App\ComplainAttachment', 'attachable');
     }
 }

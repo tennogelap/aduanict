@@ -12,6 +12,8 @@
     <link href="{{ URL::asset('css/style.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/chosen.min.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/sweetalert.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('css/pace-theme-loading-bar.tmpl.css')}}" rel="stylesheet">
     <script>
         var base_url = '{!! url('/') !!}'
     </script>
@@ -60,6 +62,21 @@
                         </a>
                     </li>
                     @endrole
+                    {{--dropdown laporan--}}
+                    @permission('ict_report_menu')
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Laporan<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                @permission('statistic_report_chart')
+                                    <li><a href="{{route('reports.monthly_statistic_aduan_ict')}}">Laporan Statistik Aduan ICT (Graf)</a></li>
+                                @endpermission
+                                @permission('statistic_report_table')
+                                    <li><a href="{{route('reports.monthly_statistic_table_aduanict')}}">Laporan Statistik Aduan ICT mengikut Kategori</a></li>
+                                @endpermission
+                            </ul>
+                        </li>
+                    @endpermission
                     <li class="dropdown">
                         @if(Auth::guest())
                         <li><a href="{{url('/login')}}">Login</a></li>
@@ -85,6 +102,9 @@
 </nav>
 <div class="container">
     @include('flash::message')
+
+    @yield('filter')
+
     @yield('content')
 </div>
 
@@ -97,6 +117,9 @@
 <script src="{{ URL::asset('js/chosen.jquery.min.js')}}"></script>
 <script src="{{ URL::asset('js/sweetalert.min.js')}}"></script>
 <script src="{{ URL::asset('js/ajax_helpers.js')}}"></script>
+<script src="{{ URL::asset('js/Chart.min.js')}}"></script>
+<script src="{{ URL::asset('js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{ URL::asset('js/pace.min.js')}}"></script>
 {{--<script src="js/bootstrap.min.js"></script>--}}
 </body>
 </html>
@@ -105,6 +128,10 @@
     $( document ).ready(function() {
         $(".chosen").chosen();
 
+        //add date picker class, then need to add this class to date input/text
+        $('.datepicker').datepicker({
+            format : 'dd-mm-yyyy',
+        });
 //      cool alert message function
 //      swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
     });

@@ -32,7 +32,8 @@ class ComplainRequest extends Request
             case 'POST':
                 {
                     $validation_rules = array('complain_category_id' => 'required',
-                                              'complain_description' => 'required');
+                                              'complain_description' => 'required',
+                                              'complain_attachment' => 'mimes:jpeg,bmp,png,pdf,doc,docx,txt,zip,rar');
                     //exclude Zakat2U and Portal from required validation
                     $aduan_category_exception_value = array('5','6');
 
@@ -42,9 +43,13 @@ class ComplainRequest extends Request
                                                     'lokasi_id'=>'required',
                                                     'ict_no'=>'required'
                                                     );
+
+                    $complain_category_id_exp = explode('-',$this->complain_category_id);
+                    $complain_category_id = $complain_category_id_exp[0];
+
                     //check complain_category_id Not in $aduan_category_exception_value
                     //in_array(field_name, array)
-                    if(!in_array($this->complain_category_id,$aduan_category_exception_value))
+                    if(!in_array($complain_category_id,$aduan_category_exception_value))
                     {
                         $validation_rules = $others_field_validation + $validation_rules;
                     }
@@ -98,6 +103,7 @@ class ComplainRequest extends Request
             'complain_source_id.required' => 'Kaedah adalah mandatori',
             'complain_description.required' => 'Aduan adalah mandatori',
             'action_comment.required' => 'Tindakan adalah mandatori',
+            'complain_attachment.mimes' => 'Apih terer ngat ekpong.... ni jah buleh upload->jpeg,bmp,png,pdf,doc,docx,txt,zip,rar'
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\ComplainAction;
 use App\ComplainCategory;
 use App\ComplainSource;
 use App\ComplainStatus;
+use App\ComplainAttachment;
 use App\Events\ComplainCreatedEvent;
 use App\Events\ComplainHelpdeskActionEvent;
 use App\Events\ComplainUserVerifyEvent;
@@ -103,12 +104,10 @@ class ComplainController extends Controller
     public function store(ComplainRequest $request)
     {
 //      Start check if Bagi Pihak is null, assign user login as bagi pihak
-//      dd($request);
         $pengadu   = $request->input('user_emp_id');
         if (empty($pengadu))
         {
             $pengadu = Auth::user()->emp_id;
-//            dd($pengadu);
         }
 //        End
 
@@ -122,10 +121,9 @@ class ComplainController extends Controller
         $input['user_emp_id'] = $pengadu;
 
         //create new record
-
         $aduan_category_exception_value = array('5','6');
 
-        if(in_array($request->complain_category_id,$aduan_category_exception_value))
+        if(in_array($input['complain_category_id'],$aduan_category_exception_value))
         {
             $input['lokasi_id'] = null;
             $input['ict_no'] = null;
@@ -134,6 +132,25 @@ class ComplainController extends Controller
 //       save
         $complain = Complain::create($input); // alternative save
 
+        //chk if has file attachment
+        if($request->hasFile('complain_attachment') && $request->file('complain_attachment')->isValid())
+        {   //rename file to make it unique
+            $fileName = $complain->complain_id.'-'.$request->file('complain_attachment')->getClientOriginalName();
+            //set destination path
+            $destinationPath = base_path().'/public/uploads/';
+            //move/upload file
+            $request->file('complain_attachment')->move($destinationPath, $fileName);
+
+            $complain_attachment = new ComplainAttachment();
+            $complain_attachment->attachable_id=$complain->complain_id;
+            $complain_attachment->attachable_type='App\Complain';
+            $complain_attachment->attachment_filename=$fileName;
+            $complain_attachment->created_at=date("Y-m-d H:i:s");
+
+            $complain_attachment->save();
+        }
+
+        //hantar email guna event
         Event::fire(new ComplainCreatedEvent($complain));
 
         //after success, route to index
@@ -176,8 +193,6 @@ class ComplainController extends Controller
         $complain = Complain::find($id);
         $statuses = ComplainStatus::lists('description', 'status_id');
         $units = Unit::lists('butiran', 'kod');
-//        $sources=ComplainSource::lists('source_description', 'source_id');
-//       $complain_actions=Complain::find($id)->complain_action_fk()->orderBy('id','desc')->get();
         $complain_actions=$this->get_complain_actions($id);
 
         //complain sources list/dropdown
@@ -220,7 +235,7 @@ class ComplainController extends Controller
         $branchs = $this->get_branch();
         //complain assets list/dropdown
         $assets = $this->get_assets();
-//        $sources=ComplainSource::lists('source_description', 'source_id');
+
         return view('complaints/action',compact('complain',
                                                 'complain_categories',
                                                 'statuses',
@@ -256,7 +271,7 @@ class ComplainController extends Controller
         $branchs = $this->get_branch();
         //complain assets list/dropdown
         $assets = $this->get_assets();
-//        $sources=ComplainSource::lists('source_description', 'source_id');
+
         return view('complaints/technical_action',compact('complain',
             'complain_categories',
             'statuses',
@@ -287,7 +302,7 @@ class ComplainController extends Controller
 
 //       save
         $complain->fill($request->all());
-//        $complain->update($input);
+
         $complain->update($request->all());
 
         //insert into complain_action as log
@@ -326,7 +341,6 @@ class ComplainController extends Controller
      */
     public function update(ComplainRequest $request, $id)
     {
-//        dd($request->all());
         $complain = complain::find($id);
         if ($request->has('complain_category_id')) {
             //udate record
@@ -414,7 +428,6 @@ class ComplainController extends Controller
         }
 //       save
         $complain->fill($request->all());
-//        $complain->update($input);
         $complain->update($request->all());
 
         //insert into complain_action as log
@@ -544,6 +557,11 @@ class ComplainController extends Controller
         {
             $branch_id = $this->request->input('branch_id');
         }
+        if(empty($branch_id))
+        {
+            $validation_branch_id = $this->request->old('branch_id');
+            $branch_id = $validation_branch_id;
+        }
         if (!empty($branch_id))
         {
             $locations= AssetsLocation::where('branch_id',$branch_id)->lists('location_description','location_id');
@@ -558,22 +576,28 @@ class ComplainController extends Controller
     }
 
 //    public function get_assets_dummy (){
-    public function get_assets (){
+    public function get_assets ($filter=array()){
         $lokasi_id= $this->request->lokasi_id;
-//        dd($lokasi_id);
+
+        if(empty($lokasi_id))
+        {
+            $validation_lokasi_id = $this->request->old('lokasi_id');
+            $lokasi_id = $validation_lokasi_id;
+        }
+
         if (!empty($lokasi_id))
         {
         $assets =Asset::select('ict_no', DB::raw('ict_no||\'-\'|| butiran AS butiran_aset'))
                 ->where('lokasi_id',$lokasi_id)
                 ->lists('butiran_aset', 'ict_no');
+        $assets = array(''=>'Pilih Aset') + $assets->all();
         }
         else
-        {
-            $assets = Asset::select('ict_no', DB::raw('ict_no||\'-\'|| butiran AS butiran_aset'))
-                    ->lists('butiran_aset','ict_no');
+        {//by default
+            $assets = array(''=>'Pilih Aset');
         }
 
-        $assets = array(''=>'Pilih Aset') + $assets->all();
+
         return $assets;
     }
     public function get_branch (){

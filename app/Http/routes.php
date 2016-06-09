@@ -37,6 +37,12 @@ Route::put('complain/verify/{complain}','ComplainController@verify')->name('comp
 Route::resource('complain','ComplainController');
 Route::auth();
 
+/***********************************************
+ *Report Routes
+ **********************************************/
+Route::get('reports/monthly_statistic_aduan_ict','ReportController@monthly_statistic_aduan_ict')->name('reports.monthly_statistic_aduan_ict');
+Route::get('reports/monthly_statistic_table_aduanict','ReportController@monthly_statistic_table_aduanict')->name('reports.monthly_statistic_table_aduanict');
+
 /** ------------------------------------------
  *  Admin Routes
  *  ------------------------------------------

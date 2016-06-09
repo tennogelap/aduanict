@@ -9,7 +9,7 @@
             </div>
             <div class="panel-body">
                 {{--<form class="form-horizontal">--}}
-                    {!! Form::open(array('route' => 'complain.store', 'class'=>"form-horizontal")) !!}
+                    {!! Form::open(array('route' => 'complain.store', 'class'=>"form-horizontal", 'files'=>true)) !!}
                     <div class="form-group">
                         <label class="col-sm-2 col-xs-2 control-label">Tarikh:</label>
                         <div class="col-sm-2 col-xs-10">
@@ -33,6 +33,11 @@
                             <input type="hidden" name="register_user_id" value="{{ Auth::user()->emp_id }}"/>
                         </div>
                     </div>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked> Pengadu
+                        </label>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Bagi Pihak</label>
                         <div class="col-sm-6">
@@ -41,7 +46,7 @@
                             </div><!-- /input-group -->
                         </div>
                     </div>
-                    <div class="form-group {{$errors->has('branch_id') ? 'has-error' : false}}">
+                    <div class="form-group {{$errors->has('complain_category_id') ? 'has-error' : false}}">
                         <label class="col-sm-2 col-xs-12 control-label">Kategori<span class="symbol"> * </span>                        </label>
                         <div class="col-sm-3 col-xs-10">
                             {!! Form::select('complain_category_id',$complain_categories,'',['class'=> 'form-control chosen','id'=>'complain_category_id'])!!}
@@ -68,7 +73,7 @@
                     <div class="form-group {{$errors->has('complain_source_id') ? 'has-error' : false}}">
                         <label class="col-sm-2 control-label">Kaedah<span class="symbol"> * </span></label>
                         <div class="col-sm-3">
-                            {!! Form::select('complain_source_id',$complain_sources,'',['class'=> 'form-control chosen'])!!}
+                            {!! Form::select('complain_source_id',$complain_sources,'',['class'=> 'form-control chosen','id'=>'complain_source_id'])!!}
 
                         </div>
                     </div>
@@ -76,6 +81,12 @@
                         <label class="col-sm-2 control-label">Aduan<span class="symbol"> * </span></label>
                         <div class="col-sm-6">
                             <textarea class="form-control" name='complain_description' rows="3">{{old('complain_description')}}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group {{$errors->has('complain_attachment') ? 'has-error' : false}}">
+                        <label class="col-sm-2 control-label">Muatnaik Gambar / Fail</label>
+                        <div class="col-sm-6">
+                            {!! Form::file('complain_attachment') !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -120,9 +131,15 @@
     <script type="text/javascript">
         $( document ).ready(function() {
 
+            var Vcomplain_category_id = $("#complain_category_id").val();
+            console.log(Vcomplain_category_id);
+            show_hide_by_category(Vcomplain_category_id);
+
             $( "#complain_category_id" ).change(function() {
                 var complain_category_id = $(this).val();
-                show_hide_by_category(complain_category_id);
+                show_hide_by_category(complain_category_id[0]);
+                $("#complain_source_id").val('');
+                $("#complain_source_id").trigger("chosen:updated");
             });
 
             $( "#branch_id" ).change(function() {
@@ -138,7 +155,16 @@
             //function untuk show hide by category
             function show_hide_by_category(complain_category_id)
             {
-//                console.log(complain_categry_id);
+                //if no category selected, just exit the function
+                if(!complain_category_id)
+                {
+                    return;
+                }
+
+                var exp_complain_category_id = complain_category_id.split('-');
+                complain_category_id = exp_complain_category_id[0];
+
+//                console.log(complain_category_id);
                 if(complain_category_id==5||complain_category_id==6)
                 {
                     $('.hide_by_category').hide();
