@@ -78,13 +78,8 @@
                 </tr>
                 @foreach($complains as $complain)
                 <tr>
-                    {{--<td>{{ is_null($complain->user_emp_id) ? $complain->register_user_id : $complain->user_emp_id }}</td>--}}
                     <td>
-                        @if(count($complain->employeeR_fk))
-                            {{ $complain->employeeR_fk->short_name }}
-                         @else
-                            {{ $complain->employeeU_fk->short_name }}
-                         @endif
+                        {{ $complain->employeeU_fk->short_name or $complains->user_emp_id}}
                     </td>
                     <td>{{$complain->complain_id}}</td>
                     <td>Aduan: {{str_limit($complain->complain_description,50)}}<br><hr>
@@ -97,9 +92,7 @@
 
                     </td>
                     <td>
-                        @if(count($complain->employeeT_fk))
-                            {{ $complain->employeeT_fk->short_name }}
-                        @endif
+                        {{ $complain->employeeT_fk->short_name or $complain->action_emp_id}}
                     </td>
                     <td>
                         {!! Form::open(array('route' => ['complain.destroy',$complain->complain_id],'method'=>'delete', 'class'=>"form-horizontal")) !!}
@@ -109,7 +102,8 @@
                             @if(Entrust::can('action_complain') )  {{--<-untuk Helpdesk--}}
                                 <a href="{{route('complain.action',$complain->complain_id)}}" class="btn btn-warning">
                                     <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
-                            @elseif(Entrust::can('edit_complain'))                                  {{--<-untuk yang ada edit complain shj--}}
+                            @elseif(Entrust::can('edit_complain') && ($complain->register_user_id==Auth::user()->emp_id
+                                                                  ||  $complain->user_emp_id==Auth::user()->emp_id) )                                  {{--<-untuk yang ada edit complain shj--}}
                                 <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
                                     <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
                             @else  {{--<-untuk orang lain--}}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Anda Tiada Hak!!!</title>
+        <title>Laman Tidak Dijumpai!!!</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -40,7 +40,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <div class="title"><h1>Nak Pergi mana tuuuu????!</h1></div>
             </div>
         </div>
     </body>

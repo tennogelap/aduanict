@@ -17,7 +17,6 @@ use App\Unit;
 use App\Asset;
 use Illuminate\Http\Request;
 
-
 use App\Http\Requests;
 use App\Complain;
 use Illuminate\Support\Facades\DB;
@@ -27,20 +26,17 @@ use Auth;
 use App\User;
 use Entrust;
 use Flash;
+
 class ComplainController extends BaseController
 {
     /*MAIN function*/
     public function __construct(Request $request)
     {
-        $this->middleware('auth');
-        $this->user_id = 0;
-        $this->unit_id = 0;
-        $this->exclude_array = [5,6];
-        if (Auth::check()){
-            $this->user_id = Auth::user()->emp_id;
-            $this->unit_id = Auth::user()->unit_id;
-        }
-        $this->request = $request;
+        parent::__construct();      //panggil _construct kat BaseController
+
+        $this->middleware('ComplainPermission');
+        //guna utk function yg tiada request
+        $this->request = $request;  //
     }
     /**
      * Display a listing of the resource.

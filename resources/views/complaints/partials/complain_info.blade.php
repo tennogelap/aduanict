@@ -1,3 +1,4 @@
+ <form class="form-horizontal">
   <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Maklumat Aduan</h3>
@@ -67,3 +68,4 @@
             </div>
         </div>
   </div>
+ </form>

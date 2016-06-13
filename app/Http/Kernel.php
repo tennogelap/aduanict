@@ -53,6 +53,8 @@ class Kernel extends HttpKernel
         'AdminUsersGuard' => \App\Http\Middleware\AdminUsersGuard::class,
         'AdminRolesGuard' => \App\Http\Middleware\AdminRolesGuard::class,
         'AdminPermissionsGuard' => \App\Http\Middleware\AdminPermissionsGuard::class,
+        'ComplainPermission' => \App\Http\Middleware\ComplainPermission::class,
+        'ReportPermission' => \App\Http\Middleware\ReportPermission::class,
 //        End add custom middleware
     ];
 }

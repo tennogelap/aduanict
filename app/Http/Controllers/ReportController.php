@@ -13,19 +13,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
-class ReportController extends Controller
+class ReportController extends BaseController
 {
     /*MAIN function*/
     public function __construct(Request $request)
     {
-        $this->middleware('auth');
-        $this->user_id = 0;
-        $this->unit_id = 0;
+        parent::__construct();      //panggil _construct kat BaseController
+        $this->middleware('ReportPermission');
 
-        if (Auth::check()){
-            $this->user_id = Auth::user()->emp_id;
-            $this->unit_id = Auth::user()->unit_id;
-        }
         $this->request = $request;
     }
 

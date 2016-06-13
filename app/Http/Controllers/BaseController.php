@@ -7,12 +7,20 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\ComplainStatus;
+use Illuminate\Support\Facades\Auth;
 
 class BaseController extends Controller
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-
+        $this->middleware('auth');
+        $this->user_id = 0;
+        $this->unit_id = 0;
+        $this->exclude_array = [5,6];
+        if (Auth::check()){
+            $this->user_id = Auth::user()->emp_id;
+            $this->unit_id = Auth::user()->unit_id;
+        }
     }
 
     public function get_complain_statuses()
