@@ -55,7 +55,7 @@
                     <div class="form-group hide_by_category {{$errors->has('branch_id') ? 'has-error' : false}}">
                         <label class="col-sm-2 col-xs-12 control-label">Cawangan<span class="symbol"> * </span></label>
                         <div class="col-sm-3 col-xs-10">
-                            {!! Form::select('branch_id',$branchs,'',['class'=> 'form-control chosen','id'=>'branch_id'])!!}
+                            {!! Form::select('branch_id',$branches,'',['class'=> 'form-control chosen','id'=>'branch_id'])!!}
                         </div>
                     </div>
                     <div class="form-group hide_by_category {{$errors->has('lokasi_id') ? 'has-error' : false}}">

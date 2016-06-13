@@ -27,7 +27,7 @@ use Auth;
 use App\User;
 use Entrust;
 use Flash;
-class ComplainController extends Controller
+class ComplainController extends BaseController
 {
     /*MAIN function*/
     public function __construct(Request $request)
@@ -35,7 +35,7 @@ class ComplainController extends Controller
         $this->middleware('auth');
         $this->user_id = 0;
         $this->unit_id = 0;
-
+        $this->exclude_array = [5,6];
         if (Auth::check()){
             $this->user_id = Auth::user()->emp_id;
             $this->unit_id = Auth::user()->unit_id;
@@ -48,37 +48,64 @@ class ComplainController extends Controller
      */
     public function index()
     {
-        if (Entrust::hasRole('members'))
+        if (Entrust::hasRole('members')||Entrust::hasRole('unit_manager'))
         {
             /*
              * show by
              * 1. REGISTER_USER_ID
              * 2. USER_EMP_ID
              * 3. ACTION_EMP_ID*/
-            $complains = Complain::where('user_emp_id',$this->user_id)
-                ->orWhere('action_emp_id', $this->user_id)
-                ->orWhere('register_user_id', $this->user_id)
-                ->paginate(15);
-        }
-        elseif (Entrust::hasRole('unit_manager'))
-        {
-            $complains = Complain::where('user_emp_id',$this->user_id)
-                ->orWhere('action_emp_id', $this->user_id)
-                ->orWhere('register_user_id', $this->user_id)
-                ->orWhere('unit_id', $this->unit_id)
-                ->paginate(15);
+
+            $complains = Complain::with('user_fk','employeeR_fk','employeeU_fk',
+                'branch_fk','complain_action_fk','assets_location_fk','asset_fk',
+                'verify_user_fk','action_user_fk','complain_unit_fk','complain_status_fk',
+                'complain_category_fk','complain_source_fk','onBehalf_fk','regUser_fk')
+                ->where(function($query)
+                    { $query ->orWhere('action_emp_id', $this->user_id)
+                        ->orWhere('register_user_id', $this->user_id)
+                        ->orWhere('unit_id',$this->unit_id);
+                    });
         }
         else
         {
-            $complains = Complain::orderBy('complain_id','desc')->paginate(15);
+            $complains = Complain::with('user_fk','employeeR_fk','employeeU_fk',
+            'branch_fk','complain_action_fk','assets_location_fk','asset_fk',
+            'verify_user_fk','action_user_fk','complain_unit_fk','complain_status_fk',
+            'complain_category_fk','complain_source_fk','onBehalf_fk','regUser_fk');
         }
-        return view('complaints/index', compact('complains'));
+        if (!empty($this->request->complain_status_id))
+        { //input dari search field
+            $complains = $complains->where('complain_status_id',$this->request->complain_status_id);
+        }
+        if (!empty($this->request->search_anything))
+        { //input dari search field
+            $complains = Complain::where(function($query)
+                { $query->orWhere('complain_description','like','%'.$this->request->search_anything.'%') ;
+                });
+        }
+        if (!empty($this->request->aduan_id))
+        { //input dari search field
+            $complains = Complain::where(function($query)
+                { $query->orWhere('complain_id', $this->request->aduan_id) ;
+                });
+        }
+        if (!empty($this->request->start_date))
+        { //input dari search field
+            $start_date = $this->format_date($this->request->start_date);
+            $complains = $complains->whereDate('created_at','>=',$start_date);
+        }
+        if (!empty($this->request->end_date))
+        { //input dari search field
+            $end_date = $this->format_date($this->request->end_date);
+            $complains = $complains->whereDate('created_at','<=',$end_date);
+        }
+
+        $complains = $complains->orderBy('complain_id','desc')->paginate(15);
+        $get_statuses = $this->get_complain_statuses();
+        return view('complaints/index', compact('complains','get_statuses'));
     }
 
-        /**
-     * Show the form for creating a new resource.
-     * @return \Illuminate\Http\Response
-     */
+        /**Show the form for creating a new resource. @return \Illuminate\Http\Response*/
     public function create()
     {   //user list/dropdown
         $users = $this->get_users();
@@ -86,14 +113,14 @@ class ComplainController extends Controller
         $complain_categories = $this->get_complain_categories();
         //complain sources list/dropdown
         $complain_sources = $this->get_complain_sources();
+        //complain branch list/dropdown
+        $branches = $this->get_branches();
         //complain location list/dropdown
         $locations = $this->get_locations();
-        //complain branch list/dropdown
-        $branchs = $this->get_branch();
         //complain assets list/dropdown
         $assets = $this->get_assets();
 
-        return view('complaints/create',compact('users','complain_categories','complain_sources','locations','branchs','assets'));
+        return view('complaints/create',compact('users','complain_categories','complain_sources','locations','branches','assets'));
     }
 
     /**
@@ -121,9 +148,7 @@ class ComplainController extends Controller
         $input['user_emp_id'] = $pengadu;
 
         //create new record
-        $aduan_category_exception_value = array('5','6');
-
-        if(in_array($input['complain_category_id'],$aduan_category_exception_value))
+        if(in_array($input['complain_category_id'],$this->exclude_array))
         {
             $input['lokasi_id'] = null;
             $input['ict_no'] = null;
@@ -177,7 +202,11 @@ class ComplainController extends Controller
      */
     public function show($id)
     {
-        return view('complaints/show');
+        //complain category list/dropdown
+        $complain = Complain::find($id);
+        $complain_actions=$this->get_complain_actions($id);
+
+        return view('complaints/show',compact(  'complain','complain_actions'));
     }
 
     /**
@@ -197,27 +226,28 @@ class ComplainController extends Controller
 
         //complain sources list/dropdown
         $complain_sources = $this->get_complain_sources();
-        //complain location list/dropdown
-        $location_filter = array('branch_id'=>$complain->branch_id);
-        $locations = $this->get_locations($location_filter);
-        //complain branch list/dropdown
-        $branchs = $this->get_branch();
-        //complain assets list/dropdown
-        $assets = $this->get_assets();
 
+        $get_branches_locations_assets = $this->prepare_branch_location_asset($complain);
+
+        $branches = $get_branches_locations_assets['branches'];
+        $locations = $get_branches_locations_assets['locations'];
+        $assets = $get_branches_locations_assets['assets'];
+        $hide_branches_locations_assets = $get_branches_locations_assets['hide_branches_locations_assets'];
         return view('complaints/edit',compact(  'complain',
                                                 'complain_categories',
                                                 'statuses',
                                                 'units',
                                                 'sources',
                                                 'complain_actions',
-                                                'branchs',
+                                                'branches',
                                                 'locations',
                                                 'complain_sources',
-                                                'assets'
+                                                'assets',
+                                                'hide_branches_locations_assets'
                                              )
                     );
     }
+
     public function action($id)
     {
         //complain category list/dropdown
@@ -232,9 +262,13 @@ class ComplainController extends Controller
         $location_filter = array('branch_id'=>$complain->branch_id);
         $locations = $this->get_locations($location_filter);
         //complain branch list/dropdown
-        $branchs = $this->get_branch();
+        $branches = $this->get_branches();
         //complain assets list/dropdown
-        $assets = $this->get_assets();
+//        $get_branches_locations_assets = $this->prepare_branch_location_asset($complain);
+        $complain_lokasi_id = $complain->lokasi_id;
+        $assets_filter = ['lokasi_id'=>$complain_lokasi_id];
+        $assets = $this->get_assets($assets_filter);
+        $hide_branches_locations_assets = 'N';
 
         return view('complaints/action',compact('complain',
                                                 'complain_categories',
@@ -243,10 +277,11 @@ class ComplainController extends Controller
                                                 'sources',
                                                 'complain_actions',
                                                 'complain_actions',
-                                                'branchs',
+                                                'branches',
                                                 'locations',
                                                 'complain_sources',
-                                                'assets'
+                                                'assets',
+                                                'hide_branches_locations_assets'
                                             ));
     }
 
@@ -268,9 +303,12 @@ class ComplainController extends Controller
         $location_filter = array('branch_id'=>$complain->branch_id);
         $locations = $this->get_locations($location_filter);
         //complain branch list/dropdown
-        $branchs = $this->get_branch();
+        $branches = $this->get_branches();
         //complain assets list/dropdown
-        $assets = $this->get_assets();
+        $complain_lokasi_id = $complain->lokasi_id;
+        $assets_filter = ['lokasi_id'=>$complain_lokasi_id];
+        $assets = $this->get_assets($assets_filter);
+//        $hide_branches_locations_assets = $get_branches_locations_assets['hide_branches_locations_assets'];
 
         return view('complaints/technical_action',compact('complain',
             'complain_categories',
@@ -279,10 +317,11 @@ class ComplainController extends Controller
             'sources',
             'complain_actions',
             'complain_actions',
-            'branchs',
+            'branches',
             'locations',
             'complain_sources',
             'assets'
+//            ,'hide_branches_locations_assets'
         ));
     }
 
@@ -291,7 +330,7 @@ class ComplainController extends Controller
   * */
     public function update_technical_action(Request $request, $id)
     {
-        //udate record
+        //update record
         $complain = Complain::find($id);
 
         $request['action_date'] = date("Y-m-d H:i:s");
@@ -313,7 +352,7 @@ class ComplainController extends Controller
             $complain_action->action_by = $this->user_id;
             $complain_action->action_comment = $request->action_comment;
             $complain_action->delay_reason = $request->delay_reason;
-            $complain_action->complain_status_id = $request['complain_status_id'];
+            $complain_action->complain_status_id = $request->complain_status_id;
 
             $complain_action->save();
         }
@@ -327,10 +366,9 @@ class ComplainController extends Controller
             Flash::success('Aduan berjaya dihantar untuk pengesahan pengadu');
         }
         //after success, route to index
-        return back();
+        //return back();
+        return redirect(route('complain.show',$id));
     }
-
-
 
     /**
      * Update the specified resource in storage.
@@ -349,9 +387,13 @@ class ComplainController extends Controller
             $input['complain_category_id'] = $category_explode[0];
             $input['unit_id'] = $category_explode[1];
         }
-        $input['lokasi_id'] = $request->lokasi_id;
-        $input['ict_no'] = $request->ict_no;
 
+        if (!in_array($complain->complain_category_id, $this->exclude_array))
+        {
+            $input['branch_id'] = $request->branch_id;
+            $input['lokasi_id'] = $request->lokasi_id;
+            $input['ict_no'] = $request->ict_no;
+        }
         $complain->fill($input);
         //save
         $complain->save();
@@ -361,9 +403,12 @@ class ComplainController extends Controller
 
         return back();
     }
-    public function verify(Request $request, $id)
+    public function verify(ComplainRequest $request, $id)
     {
         $complain = Complain::find($id);
+        $complain_action = new ComplainAction;
+        $complain_action ->complain_status_id = $complain->complain_status_id;
+
         if($request->submit_type=='finish')
         {
             $complain->complain_status_id=4;
@@ -384,7 +429,7 @@ class ComplainController extends Controller
          * */
 
         //insert into complain_action as log
-        $complain_action = new ComplainAction;
+
 
         $complain_action ->complain_id=$id;
         $complain_action ->user_emp_id=$this->user_id;
@@ -396,8 +441,7 @@ class ComplainController extends Controller
 
         //kalau helpdesk update action assign, event send email kepada Unit manager
         Event::fire(new ComplainUserVerifyEvent($complain));
-
-        return back();
+        return redirect(route('complain.show',$id));
     }
     /*
      * Helpdesk update action
@@ -406,6 +450,8 @@ class ComplainController extends Controller
     {
         //udate record
         $complain = Complain::find($id);
+        $complain_action = new ComplainAction;
+        $complain_action->complain_status_id = $complain->complain_status_id;
 
         $request['action_date'] = date("Y-m-d H:i:s");
         
@@ -431,21 +477,22 @@ class ComplainController extends Controller
         $complain->update($request->all());
 
         //insert into complain_action as log
-        $complain_action = new ComplainAction;
+        if($complain->complain_status_id>1)
+        {
 
-        $complain_action ->complain_id=$id;
-        $complain_action ->action_by=$this->user_id;
-        $complain_action ->action_comment=$request->action_comment;
-        $complain_action ->delay_reason=$request->helpdesk_delay_reason;
-        $complain_action ->complain_status_id=$request['complain_status_id'];
+            $complain_action->complain_id = $id;
+            $complain_action->action_by = $this->user_id;
+            $complain_action->action_comment = $request->action_comment;
+            $complain_action->delay_reason = $request->helpdesk_delay_reason;
 
-        $complain_action->save();
+            $complain_action->save();
+        }
 
         //kalau helpdesk update action assign, event send email kepada Unit manager
         Event::fire(new ComplainHelpdeskActionEvent($complain));
 
         //after success, route to index
-        return back();
+        return redirect(route('complain.show',$id));
     }
 
     /**
@@ -548,6 +595,7 @@ class ComplainController extends Controller
     }
     public function get_locations ($filter=array()){
         //check for edit filter by branch_id in array
+        //dd(1);
         if (isset($filter['branch_id'])&& !empty($filter['branch_id']))
         {
             $branch_id = $filter['branch_id'];
@@ -564,20 +612,26 @@ class ComplainController extends Controller
         }
         if (!empty($branch_id))
         {
-            $locations= AssetsLocation::where('branch_id',$branch_id)->lists('location_description','location_id');
+            $locations= AssetsLocation::where('branch_id',$branch_id)
+                ->lists('location_description','location_id');
         }
         else
         {
             $locations= AssetsLocation::lists('location_description','location_id');
         }
-//        $locations= AssetsLocation::lists('location_description','location_id');
         $locations = array(''=>'Pilih lokasi') + $locations->all();
         return $locations;
     }
 
-//    public function get_assets_dummy (){
     public function get_assets ($filter=array()){
+        //filter by ajax request
         $lokasi_id= $this->request->lokasi_id;
+
+        //or filter by array from other function
+        if (isset($filter['lokasi_id'])&& !empty($filter['lokasi_id']))
+        {
+            $lokasi_id = $filter['lokasi_id'];
+        }
 
         if(empty($lokasi_id))
         {
@@ -597,19 +651,62 @@ class ComplainController extends Controller
             $assets = array(''=>'Pilih Aset');
         }
 
-
         return $assets;
     }
-    public function get_branch (){
-        $branchs= Branch::lists('branch_description','id');
-        $branchs = array(''=>'Pilih cawangan') + $branchs->all();
-        return $branchs;
+    public function get_branches (){
+        $branches= Branch::lists('branch_description','id');
+        $branches = array(''=>'Pilih cawangan') + $branches->all();
+        return $branches;
     }
 
     public function get_complain_actions($id){
 
         $complain_actions=Complain::find($id)->complain_action_fk()->orderBy('id','desc')->get();
         return $complain_actions;
+    }
+    function prepare_branch_location_asset($complain, $method='edit')
+    {
+        //if zakat2u & portal, exclude branch, location, asssetid
+
+        if(!in_array($complain->complain_category_id, $this->exclude_array)) {
+            //complain location list/dropdown
+            $location_filter = array('branch_id' => $complain->branch_id);
+            $locations = $this->get_locations($location_filter);
+            //complain branch list/dropdown
+            $branches = $this->get_branches();
+            //complain assets list/dropdown
+            $complain_lokasi_id = $complain->lokasi_id;
+            $assets_filter = ['lokasi_id' => $complain_lokasi_id];
+            $assets = $this->get_assets($assets_filter);
+            $hide_branches_locations_assets ='N';
+        }
+        else
+        {
+            if($method=='action')
+            {
+                $branches = $this->get_branches();
+                $locations = $this->get_locations();
+                $assets = $this->get_assets();
+                $hide_branches_locations_assets = 'N';
+            }
+            else
+            {
+                $branches = [];
+                $locations = [];
+                $assets = [];
+                $hide_branches_locations_assets = 'Y';
+            }
+        }
+        return ['branches'=>$branches,
+                'locations'=>$locations,
+                'assets'=>$assets,
+                'hide_branches_locations_assets'=>$hide_branches_locations_assets];
+    }
+    public function get_complain_statuses()
+    {
+        $complain_statuses = ComplainStatus::lists('description','status_id');
+        $complain_statuses = [''=>'Pilih Status']+ $complain_statuses->all();
+        return $complain_statuses;
     }
 
 }
