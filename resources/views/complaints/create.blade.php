@@ -23,30 +23,31 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Pengadu:</label>
+                        <label class="col-sm-2 col-xs-2 control-label">Pengadu:</label>
                         <div class="col-sm-3">
                             <p class="form-control-static" >{{ Auth::user()->name }}</p>
                         </div>
-                        <label class="col-sm-2 control-label">No. Pekerja:</label>
+                        <label class="col-sm-2 col-xs-2 control-label">No. Pekerja:</label>
                         <div class="col-sm-2">
                             <p class="form-control-static">{{ Auth::user()->emp_id }}</p>
                             <input type="hidden" name="register_user_id" value="{{ Auth::user()->emp_id }}"/>
                         </div>
                     </div>
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary active">
-                            <input type="radio" name="options" id="option1" autocomplete="off" checked> Pengadu
-                        </label>
-                    </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Bagi Pihak</label>
-                        <div class="col-sm-6">
+                        <div class="checkbox ">
+                            <div class="col-sm-2">
+                                <label class="col-sm-1 col-xs-2 control-label">
+                                    {{ Form::checkbox('bagi_pihak', 'Y',false,['id'=>"bagi_pihak"]) }} Ya
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 hide_div" id="hide_bagiPihak">
                             <div class="input-group">
-                                {!! Form::select('user_emp_id',$users,'user_emp_id',['class'=> 'form-control chosen','id'=>'user_emp_id'])!!}
+                                {!! Form::select('user_emp_id',$users,'user_emp_id',['class'=> 'form-control','id'=>'user_emp_id'])!!}
                             </div><!-- /input-group -->
                         </div>
                     </div>
-                    <div class="form-group {{$errors->has('complain_category_id') ? 'has-error' : false}}">
+                <div class="form-group {{$errors->has('complain_category_id') ? 'has-error' : false}}">
                         <label class="col-sm-2 col-xs-12 control-label">Kategori<span class="symbol"> * </span>                        </label>
                         <div class="col-sm-3 col-xs-10">
                             {!! Form::select('complain_category_id',$complain_categories,'',['class'=> 'form-control chosen','id'=>'complain_category_id'])!!}
@@ -152,6 +153,24 @@
                 get_assets_by_locations(lokasi_id);
             });
 
+            var bagi_pihak =$('#bagi_pihak:checked').val();
+            if(bagi_pihak=='Y')
+            {
+                $('#hide_bagiPihak').show();
+            }
+
+            $( "#bagi_pihak" ).change(function() {
+
+                if($(this).prop("checked"))
+                {
+                    $('#hide_bagiPihak').show();
+                }
+                else
+                {
+                    $('#hide_bagiPihak').hide();
+                }
+
+            });
             //function untuk show hide by category
             function show_hide_by_category(complain_category_id)
             {

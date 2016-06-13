@@ -87,7 +87,7 @@
                     </td>
                     <td>{{$complain->created_at->format('d-m-Y H:i:s')}}</td>
                     <td>
-                        {{--tengok model function mutator--}}
+                        {{--tengok model Complain function mutator--}}
                         {!! $complain->status !!}
 
                     </td>
@@ -97,69 +97,7 @@
                     <td>
                         {!! Form::open(array('route' => ['complain.destroy',$complain->complain_id],'method'=>'delete', 'class'=>"form-horizontal")) !!}
 
-                        @if($complain->complain_status_id==1)
-                            {{--if members can edit complain when status is BARU--}}
-                            @if(Entrust::can('action_complain') )  {{--<-untuk Helpdesk--}}
-                                <a href="{{route('complain.action',$complain->complain_id)}}" class="btn btn-warning">
-                                    <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
-                            @elseif(Entrust::can('edit_complain') && ($complain->register_user_id==Auth::user()->emp_id
-                                                                  ||  $complain->user_emp_id==Auth::user()->emp_id) )                                  {{--<-untuk yang ada edit complain shj--}}
-                                <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
-                                    <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
-                            @else  {{--<-untuk orang lain--}}
-                                <a href="{{route('complain.show',$complain->complain_id)}}" class="btn btn-info">
-                                    <span class="glyphicon glyphicon-eye-open"></span>  Papar</a>
-                            @endif
-                            @if(Entrust::can('delete_complain') AND $complain->complain_status_id==1)
-                                <button type="button" class="btn btn-danger" data-destroy><span class="glyphicon glyphicon-trash"></span> Hapus</button>
-                            @endif
-                        @elseif($complain->complain_status_id==2)
-                            {{--if members can edit complain when status is TINDAKAN--}}
-                            @if((Entrust::can('technical_action_complain') && ($complain->register_user_id!=Auth::user()->emp_id || $complain->user_emp_id!=Auth::user()->emp_id))
-                             || (Entrust::can('action_complain') && ($complain->action_emp_id==Auth::user()->emp_id))) {{--<-untuk Technical team & Helpdesk--}}
-                                <a href="{{route('complain.technical_action',$complain->complain_id)}}" class="btn btn-warning">
-                                    <span class="glyphicon glyphicon-edit"></span> Kemaskini</a>
-                            @else   {{--orang lain xleh edit.. bagi tengok jer--}}                                {{--<-untuk yang ada edit complain shj--}}
-                                <a href="{{route('complain.show',$complain->complain_id)}}" class="btn btn-info">
-                                    <span class="glyphicon glyphicon-eye-open"></span> Papar</a>
-                            @endif
-                        @elseif($complain->complain_status_id==3)
-                            {{--if members can edit complain when status is SAHKAN(P)--}}
-                            @if(Entrust::can('verify_complain_action') && ($complain->register_user_id==Auth::user()->emp_id || $complain->user_emp_id==Auth::user()->emp_id)) {{--<-untuk Pengesahan Pengadu--}}
-                                <a href="{{route('complain.edit',$complain->complain_id)}}" class="btn btn-warning">
-                                    <span class="glyphicon glyphicon-edit"></span> Pengesahan</a>
-                            @else
-                                <a href="{{route('complain.show',$complain->complain_id)}}" class="btn btn-info">
-                                    <span class="glyphicon glyphicon-eye-open"></span> Papar</a>
-                            @endif
-                        @elseif($complain->complain_status_id==4)
-                            {{--if members can edit complain when status is SAHKAN(H)--}}
-                            @if(Entrust::can('close_complain'))  {{--<-untuk Pengesahan Pengadu--}}
-                            <a href="{{route('complain.action',$complain->complain_id)}}" class="btn btn-warning">
-                                <span class="glyphicon glyphicon-edit"></span> Pengesahan Helpdesk</a>
-                            @else
-                                <a href="{{route('complain.show',$complain->complain_id)}}" class="btn btn-info">
-                                    <span class="glyphicon glyphicon-eye-open"></span> Papar</a>
-                            @endif
-
-                        @elseif($complain->complain_status_id==6)
-                            {{--if members can edit complain when status is HAPUS--}}
-
-                        @elseif($complain->complain_status_id==7)
-                            {{--if members can edit complain when status is HAPUS--}}
-                            @if(Entrust::can('assign_complain'))  {{--<-untuk Pengesahan Pengadu--}}
-                            <a href="{{route('complain.assign_staff',$complain->complain_id)}}" class="btn btn-warning">
-                                <span class="glyphicon glyphicon-user"></span> Agihan</a>
-                            @else
-                                <a href="{{route('complain.show',$complain->complain_id)}}" class="btn btn-info">
-                                    <span class="glyphicon glyphicon-eye-open"></span> Papar</a>
-                            @endif
-                        @else
-                            {{--can view only--}}
-                            <a href="{{route('complain.show',$complain->complain_id)}}" class="btn btn-info">
-                                <span class="glyphicon glyphicon-eye-open"></span> Papar</a>
-
-                        @endif
+                        {!! CustomHelper::format_action_button($complain) !!}
 
                         {{-- Letak checking if role!= helpdesk, hide delete button--}}
                         {!! Form::close() !!}

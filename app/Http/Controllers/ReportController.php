@@ -19,7 +19,8 @@ class ReportController extends BaseController
     public function __construct(Request $request)
     {
         parent::__construct();      //panggil _construct kat BaseController
-        $this->middleware('ReportPermission');
+
+        $this->middleware('ReportPermission'); //panggil middleware report
 
         $this->request = $request;
     }
@@ -65,7 +66,7 @@ class ReportController extends BaseController
         $monthly_total = json_encode($monthly_total);
         $month_name = json_encode($month_name);
         $complain_categories = $this->get_complain_categories();
-        $branchs = $this->get_branch();
+        $branches = $this->get_branches();
 
       return view('reports.monthly_statistic_aduan_ict',
           compact('complains','monthly_total','month_name','start_date','end_date','complain_categories','branchs'));
@@ -142,9 +143,5 @@ class ReportController extends BaseController
 
         return $complain_categories;
     }
-    public function get_branch (){
-        $branchs= Branch::lists('branch_description','id');
-        $branchs = array(''=>'Pilih cawangan') + $branchs->all();
-        return $branchs;
-    }
+
 }
