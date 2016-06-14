@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Cawangan:</label>
-                        {!! Form::select('branch_id',$branchs,Request::get('branch_id'),['class'=> 'form-control chosen','id'=>'branch_id'])!!}
+                        {!! Form::select('branch_id',$branches,Request::get('branch_id'),['class'=> 'form-control chosen','id'=>'branch_id'])!!}
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">Tarikh Mula:</label>

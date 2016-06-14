@@ -152,7 +152,7 @@ class ComplainController extends BaseController
         //chk if has file attachment
         if($request->hasFile('complain_attachment') && $request->file('complain_attachment')->isValid())
         {   //rename file to make it unique
-            $fileName = $complain->complain_id.'-'.$request->file('complain_attachment')->getClientOriginalName();
+            $fileName = $complain->complain_id.'_'.$request->file('complain_attachment')->getClientOriginalName();
             //set destination path
             $destinationPath = base_path().'/public/uploads/';
             //move/upload file
@@ -162,7 +162,7 @@ class ComplainController extends BaseController
             $complain_attachment->attachable_id=$complain->complain_id;
             $complain_attachment->attachable_type='App\Complain';
             $complain_attachment->attachment_filename=$fileName;
-            $complain_attachment->created_at=date("Y-m-d H:i:s");
+            $complain_attachment->created_at=date("Y-m-d");
 
             $complain_attachment->save();
         }

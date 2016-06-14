@@ -33,7 +33,7 @@ class ComplainRequest extends Request
                 {
                     $validation_rules = array('complain_category_id' => 'required',
                                               'complain_description' => 'required',
-                                              'complain_attachment' => 'mimes:jpeg,bmp,png,pdf,doc,docx,txt,zip,rar');
+                                              'complain_attachment' => 'mimes:jpeg,jpg,bmp,png,pdf,doc,docx,txt,zip,rar');
                     //exclude Zakat2U and Portal from required validation
                     $aduan_category_exception_value = array('5','6');
 

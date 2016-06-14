@@ -127,7 +127,16 @@ class BaseController extends Controller
         }
         else
         {//by default
-            $assets = array(''=>'Pilih Aset');
+            if (env('APP_ENV') === 'testing')
+            {
+                $assets =Asset::select('ict_no', DB::raw('ict_no||\'-\'|| butiran AS butiran_aset'))
+                    ->lists('butiran_aset', 'ict_no');
+            }
+            else
+            {
+                $assets = array(''=>'Pilih Aset');
+            }
+
         }
 
         return $assets;

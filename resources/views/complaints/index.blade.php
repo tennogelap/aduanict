@@ -79,20 +79,20 @@
                 @foreach($complains as $complain)
                 <tr>
                     <td>
-                        {{ $complain->employeeU_fk->short_name or $complains->user_emp_id}}
+                        {{ $complain->onBehalf_fk->full_name or $complains->user_emp_id}}
                     </td>
                     <td>{{$complain->complain_id}}</td>
                     <td>Aduan: {{str_limit($complain->complain_description,50)}}<br><hr>
                         Tindakan: {{$complain->action_comment}}
                     </td>
-                    <td>{{$complain->created_at->format('d-m-Y H:i:s')}}</td>
+                    <td>{{$complain->created_at->format('d-m-Y h:ia')}}</td>
                     <td>
                         {{--tengok model Complain function mutator--}}
                         {!! $complain->status !!}
 
                     </td>
                     <td>
-                        {{ $complain->employeeT_fk->short_name or $complain->action_emp_id}}
+                        {{ $complain->action_user_fk->full_name or $complain->action_emp_id}}
                     </td>
                     <td>
                         {!! Form::open(array('route' => ['complain.destroy',$complain->complain_id],'method'=>'delete', 'class'=>"form-horizontal")) !!}

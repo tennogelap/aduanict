@@ -19,6 +19,11 @@ class ComplainPermission
      */
     public function handle($request, Closure $next)
     {
+        //disable middleware if unit testing
+        /*if (env('APP_ENV') === 'testing') {
+            return $next($request);
+        }*/
+
         $route_name = Route::currentRouteName();
         $route_parameters = $request->route()->parameters();
         //check permission untuk tambah aduan

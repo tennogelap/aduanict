@@ -69,7 +69,7 @@ class ReportController extends BaseController
         $branches = $this->get_branches();
 
       return view('reports.monthly_statistic_aduan_ict',
-          compact('complains','monthly_total','month_name','start_date','end_date','complain_categories','branchs'));
+          compact('complains','monthly_total','month_name','start_date','end_date','complain_categories','branches'));
     }
 
     public function monthly_statistic_table_aduanict()

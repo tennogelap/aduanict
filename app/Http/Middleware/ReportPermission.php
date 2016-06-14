@@ -16,6 +16,11 @@ class ReportPermission
      */
     public function handle($request, Closure $next)
     {
+        //disable middleware if unit testing
+        /*if (env('APP_ENV') === 'testing') {
+            return $next($request);
+        }*/
+
         $route_name = Route::currentRouteName();
 
         //check permission untuk report graph statistik

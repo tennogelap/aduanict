@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->morphMany('App\ComplainAttachment','attachable');
     }
+    public function getFullNameAttribute()
+    {
+        $full_name = $this->name.' '.$this->lastname;
+        return ucwords($full_name);
+    }
 }
