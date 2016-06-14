@@ -143,4 +143,9 @@ class Complain extends Model
     {
         return $this->morphMany('App\ComplainAttachment', 'attachable');
     }
+//    automatically guna masa store
+    public function setComplainDescriptionAttribute($value)
+    {
+        $this->attributes['complain_description'] = strtolower($value);
+    }
 }

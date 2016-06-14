@@ -17,6 +17,9 @@
 Route::get('/', function(){
             return view('welcome');
         });
+//check session route
+Route::get('check_session','Auth\AuthController@check_session')->name('check_session');
+
 //get
 Route::get('/home', 'HomeController@index');
 Route::get('complain/locations','ComplainController@get_locations')->name('complain.locations');

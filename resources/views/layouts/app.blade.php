@@ -134,6 +134,50 @@
         });
 //      cool alert message function
 //      swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
+
+        //check Laravel for session expiry
+        setInterval(function(){
+            check_session()
+        }, 5000);
+
+        function check_session()
+        {
+            $.ajax
+            ({
+                type: "GET",
+                url: base_url + '/check_session',
+                dataType: "json",
+                data:
+                {
+
+                },
+                beforeSend: function()
+                {
+                    //////////////////////////////
+                },
+                success: function (check_data)
+                {
+                    if (!check_data.logged_in)
+                    {
+//                        alert('Session expired. Please Re-login to continue');
+                        swal({   title: "Sesi tamat",
+                            text: "Sila login semula untuk terus mengguna sistem",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false,
+                            closeOnCancel: false },
+
+                                function(isConfirm)
+                                {
+                                    location.reload();
+                                });
+
+                    }
+                }
+            });
+        }
     });
 </script>
 
