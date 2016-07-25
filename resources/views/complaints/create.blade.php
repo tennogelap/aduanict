@@ -12,7 +12,7 @@
                     {!! Form::open(array('route' => 'complain.store', 'class'=>"form-horizontal", 'files'=>true)) !!}
                     <div class="form-group">
                         <label class="col-sm-2 col-xs-2 control-label">Tarikh:</label>
-                        <div class="col-sm-2 col-xs-10">
+                        <div class="col-sm-3 col-xs-10">
                             <p class="form-control-static">{{date('d/m/y')}}</p>
                         </div>
                     {{--</div>
@@ -35,13 +35,13 @@
                     </div>
                     <div class="form-group">
                         <div class="checkbox ">
-                            <div class="col-sm-2">
-                                <label class="col-sm-1 col-xs-2 control-label">
+                            <div class="col-sm-2">Bagi Pihak
+                                <label class="col-sm-12 col-xs-2 control-label">
                                     {{ Form::checkbox('bagi_pihak', 'Y',false,['id'=>"bagi_pihak"]) }} Ya
                                 </label>
                             </div>
                         </div>
-                        <div class="col-sm-3 hide_div" id="hide_bagiPihak">
+                        <div class="col-sm-3 hide_div" id="pilih_bagi_pihak">
                             <div class="input-group">
                                 {!! Form::select('user_emp_id',$users,'user_emp_id',['class'=> 'form-control','id'=>'user_emp_id'])!!}
                             </div><!-- /input-group -->
@@ -87,9 +87,97 @@
                     <div class="form-group {{$errors->has('complain_attachment') ? 'has-error' : false}}">
                         <label class="col-sm-2 control-label">Muatnaik Gambar / Fail</label>
                         <div class="col-sm-6">
+                            {{--<table class="table table-bordered" id='mytable'>
+                                {!! Form::file('complain_attachment') !!}
+                            </table>
+                            <input type='button' id='btnAddRow' value='Add' onclick='javaScript:addTableRow();'>--}}
                             {!! Form::file('complain_attachment') !!}
                         </div>
                     </div>
+                {{--Test--}}
+                    <div class="container">
+                        <div class="row clearfixHeader">
+                            <div class="col-md-12 column">
+                                <table class="table table-bordered table-hover" id="tab_logicHeader" name="tab_logicHeader">
+                                    <thead>
+                                    <tr >
+                                        <th class="text-center">
+                                            #
+                                        </th>
+                                        <th class="text-center">
+                                            Name
+                                        </th>
+                                        <th class="text-center">
+                                            Mail
+                                        </th>
+                                        <th class="text-center">
+                                            Mobile
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id='xaddr'>
+                                        <td class="col-xs-1">
+                                            1
+                                        </td >
+                                        <td class="col-sm-3">
+                                            <input type="text" name="xname" id="xname" placeholder='Name' class="form-control"/>
+                                        </td>
+                                        <td class="col-sm-3">
+                                            <input type="text" name="xmail" id="xmail" placeholder='Mail' class="form-control"/>
+                                        </td>
+                                        <td class="col-sm-2">
+                                            <input type="text" name="xmobile" id="xmobile" placeholder='Mobile' class="form-control"/>
+                                        </td>
+                                    </tr>
+                                    <tr id='xaddr'></tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                        </div>
+                        <div class="container">
+                            <a id="add_row" class="btn btn-default pull-left">Add Row</a>
+                            <div class="row clearfix">
+                                <table class="table table-bordered table-hover" id="tab_logic" name="tab_logic">
+                                    <thead>
+                                    <tr >
+                                        <th class="text-center">
+                                            #
+                                        </th>
+                                        <th class="text-center">
+                                            Name
+                                        </th>
+                                        <th class="text-center">
+                                            Mail
+                                        </th>
+                                        <th class="text-center">
+                                            Mobile
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{--<tr id='addr0' type="hidden">
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            <input type="text" name='name0'  placeholder='Name' class="form-control"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name='mail0' placeholder='Mail' class="form-control"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name='mobile0' placeholder='Mobile' class="form-control"/>
+                                        </td>
+                                    </tr>
+                                    <tr id='addr1'></tr>--}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a id='delete_row' class="pull-right btn btn-default">Delete Row</a>
+                    </div>
+                {{--Test--}}
                     <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-primary">Hantar</button>
@@ -103,163 +191,6 @@
     </div>
 @endsection
 
-@section('modal')
-    <!-- Large modal -->
-    <div id="bagiPihak" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="gridSystemModalLabel">Bagi Pihak</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item active">
-                            Firdaus
-                        </a>
-                        <a href="#" class="list-group-item">Syahril</a>
-                        <a href="#" class="list-group-item">Ruzaini</a>
-                        <a href="#" class="list-group-item">Rahmat</a>
-                        <a href="#" class="list-group-item">Mohammad</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-
 @section('script')
-    <script type="text/javascript">
-        $( document ).ready(function() {
-
-            var Vcomplain_category_id = $("#complain_category_id").val();
-            console.log(Vcomplain_category_id);
-            show_hide_by_category(Vcomplain_category_id);
-
-            $( "#complain_category_id" ).change(function() {
-                var complain_category_id = $(this).val();
-                show_hide_by_category(complain_category_id[0]);
-                $("#complain_source_id").val('');
-                $("#complain_source_id").trigger("chosen:updated");
-            });
-
-            $( "#branch_id" ).change(function() {
-                var branch_id = $(this).val();
-                get_locations_by_branch(branch_id);
-            });
-
-            $( "#lokasi_id" ).change(function() {
-                var lokasi_id = $(this).val();
-                get_assets_by_locations(lokasi_id);
-            });
-
-            var bagi_pihak =$('#bagi_pihak:checked').val();
-            if(bagi_pihak=='Y')
-            {
-                $('#hide_bagiPihak').show();
-            }
-
-            $( "#bagi_pihak" ).change(function() {
-
-                if($(this).prop("checked"))
-                {
-                    $('#hide_bagiPihak').show();
-                }
-                else
-                {
-                    $('#hide_bagiPihak').hide();
-                }
-
-            });
-            //function untuk show hide by category
-            function show_hide_by_category(complain_category_id)
-            {
-                //if no category selected, just exit the function
-                if(!complain_category_id)
-                {
-                    return;
-                }
-
-                var exp_complain_category_id = complain_category_id.split('-');
-                complain_category_id = exp_complain_category_id[0];
-
-//                console.log(complain_category_id);
-                if(complain_category_id==5||complain_category_id==6)
-                {
-                    $('.hide_by_category').hide();
-                }
-                else
-                {
-                    $('.hide_by_category').show();
-                }
-                //when validation error after processing form, reinitialize
-                //start code
-
-                //end code
-            }
-
-            //function untuk panggilan location ikut branch ajax
-            function get_locations_by_branch(branch_id)
-            {
-                $.ajax
-                ({
-                    type: "GET",
-                    url: base_url + '/complain/locations',
-                    dataType: "json",
-                    data:
-                    {
-                        branch_id : branch_id
-                    },
-                    beforeSend: function()
-                    {
-                        //////////////////////////////
-                    },
-                    success: function (location_data)
-                    {
-                        $("#lokasi_id").empty();
-
-                        //create a new dropdown option using the data provided by json object
-
-                        $.each(location_data, function(key, value) {
-                            $("#lokasi_id").append("<option value='"+ key +"'>" + value + "</option>");
-                        });
-                        $("#lokasi_id").val('');
-                        $("#lokasi_id").trigger("chosen:updated");
-                    }
-                });
-
-            }
-            //function untuk panggilan aset ikut location ajax
-            function get_assets_by_locations(location_id)
-            {
-                $.ajax
-                ({
-                    type: "GET",
-                    url: base_url + '/complain/assets',
-                    dataType: "json",
-                    data:
-                    {
-                        lokasi_id : location_id
-                    },
-                    beforeSend: function()
-                    {
-                        //////////////////////////////
-                    },
-                    success: function (assets_data)
-                    {
-                        $("#ict_no").empty();
-
-                        //create a new dropdown option using the data provided by json object
-
-                        $.each(assets_data, function(key, value) {
-                            $("#ict_no").append("<option value='"+ key +"'>" + value + "</option>");
-                        });
-                        $("#ict_no").val('');
-                        $("#ict_no").trigger("chosen:updated");
-                    }
-                });
-
-            }
-        });
-    </script>
+    @include('complaints.partials.form_script')
 @endsection

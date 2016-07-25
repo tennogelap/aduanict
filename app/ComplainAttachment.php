@@ -9,9 +9,14 @@ class ComplainAttachment extends Model
     protected $table ='complain_attachments';
     protected $primaryKey ='attachment_id';
     public $timestamps = false;
+
+    public function setUserEmpIdAttribute($value)
+    {
+        $this->attributes['attachable_id'] = (string) $value;
+    }
 //
-    public function attachable()
+   /* public function attachable()
     {
         return $this->morphTo();
-    }
+    }*/
 }

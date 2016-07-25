@@ -82,7 +82,7 @@
                         {{ $complain->onBehalf_fk->full_name or $complains->user_emp_id}}
                     </td>
                     <td>{{$complain->complain_id}}</td>
-                    <td>Aduan: {{str_limit($complain->complain_description,50)}}<br><hr>
+                    <td>Aduan: {{str_limit($complain->complain_description,50)}}<br>
                         Tindakan: {{$complain->action_comment}}
                     </td>
                     <td>{{$complain->created_at->format('d-m-Y h:ia')}}</td>

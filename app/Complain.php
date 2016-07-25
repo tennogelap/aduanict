@@ -141,7 +141,9 @@ class Complain extends Model
     }
     public function attachments()
     {
-        return $this->morphMany('App\ComplainAttachment', 'attachable');
+        return $this->morphMany('App\ComplainAttachment', 'attachable')
+            ->orderBy('attachment_ext', 'asc')
+            ->orderBy('attachment_id', 'asc');
     }
 //    automatically guna masa store
     public function setComplainDescriptionAttribute($value)

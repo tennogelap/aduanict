@@ -66,6 +66,35 @@
                     {{--<textarea class="form-control" rows="3" name="complain_description">{{$complain->complain_description}}</textarea>--}}
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Fail Lampiran</label>
+                <div class="col-sm-6">
+                    <div class="row">
+                        @foreach($complain->attachments as $attachment)
+                            <?php
+                            $img_extension = ['png','gif','jpg','bmp','jpeg'];
+                            $extension = File::extension($attachment->attachment_filename)
+                            ?>
+                            @if(in_array($extension,$img_extension))
+                                <div class="col-xs-3 col-sm-3">
+                                    <a href="{{ url('uploads/'.$attachment->attachment_filename) }}" class="thumbnail">
+                                        <img src="{{ url('uploads/'.$attachment->attachment_filename) }}" alt="">
+                                    </a>
+                                </div>
+                            @else
+                                <div class="col-xs-1 col-sm-1">
+                                    <a href="{{ url('uploads/'.$attachment->attachment_filename)}}" alt="">
+                                        {{ $attachment->attachment_filename }}
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="row">
+
+                    </div>
+                </div>
+            </div>
         </div>
   </div>
  </form>

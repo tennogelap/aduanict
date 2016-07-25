@@ -13,7 +13,8 @@
     <link href="{{ URL::asset('css/chosen.min.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/sweetalert.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('css/pace-theme-loading-bar.tmpl.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('css/pace-theme-loading-bar.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('css/jqClock.css')}}" rel="stylesheet">
     <script>
         var base_url = '{!! url('/') !!}'
     </script>
@@ -41,61 +42,61 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    @role('admin')
-                        <li>
-                            <a href="{{ route('admin.users.index') }}">Panel Admin</a>
-                        </li>
-                    @endrole
-                    <li>
-                        <a href="#">Tambah Aduan</a>
-                    </li>
-                    <li class="active">
-                        <a href="{{url('complain')}}">
-                            Senarai Aduan
-                        </a>
-                    </li>
-                    @role('unit_manager')
-                    <li class="active">
-                        <a href="{{route('complain.assign')}}">
-                            Senarai Agihan
-                        </a>
-                    </li>
-                    @endrole
-                    {{--dropdown laporan--}}
-                    @permission('ict_report_menu')
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                Laporan<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                @permission('statistic_report_chart')
-                                    <li><a href="{{route('reports.monthly_statistic_aduan_ict')}}">Laporan Statistik Aduan ICT (Graf)</a></li>
-                                @endpermission
-                                @permission('statistic_report_table')
-                                    <li><a href="{{route('reports.monthly_statistic_table_aduanict')}}">Laporan Statistik Aduan ICT mengikut Kategori</a></li>
-                                @endpermission
-                            </ul>
-                        </li>
-                    @endpermission
-                    <li class="dropdown">
-                        @if(Auth::guest())
-                        <li><a href="{{url('/login')}}">Login</a></li>
-                        <li><a href="{{url('/register')}}">Daftar</a></li>
-                         @else
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                {{ Auth::user()->name }}
-                                <span class="caret">
+            <ul class="nav navbar-nav navbar-right">
+                @role('admin')
+                <li>
+                    <a href="{{ route('admin.users.index') }}">Panel Admin</a>
+                </li>
+                @endrole
+                <li>
+                    <a href="{{route('complain.create')}}">Tambah Aduan</a>
+                </li>
+                <li class="active">
+                    <a href="{{url('complain')}}">
+                        Senarai Aduan
+                    </a>
+                </li>
+                @role('unit_manager')
+                <li class="active">
+                    <a href="{{route('complain.assign')}}">
+                        Senarai Agihan
+                    </a>
+                </li>
+                @endrole
+                {{--dropdown laporan--}}
+                @permission('ict_report_menu')
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Laporan<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        @permission('statistic_report_chart')
+                        <li><a href="{{route('reports.monthly_statistic_aduan_ict')}}">Laporan Statistik Aduan ICT (Graf)</a></li>
+                        @endpermission
+                        @permission('statistic_report_table')
+                        <li><a href="{{route('reports.monthly_statistic_table_aduanict')}}">Laporan Statistik Aduan ICT mengikut Kategori</a></li>
+                        @endpermission
+                    </ul>
+                </li>
+                @endpermission
+                <li class="dropdown">
+                @if(Auth::guest())
+                    <li><a href="{{url('/login')}}">Login</a></li>
+                    <li><a href="{{url('/register')}}">Daftar</a></li>
+                @else
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {{ Auth::user()->name }}
+                        <span class="caret">
                                 </span>
-                            </a>
-                        @endif
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="profile">Profile</a></li>
-                            <li><a href="katalaluan">Kata Laluan</a></li>
-                            <li><a href="{{url('logout')}}">Logout</a></li>
-                        </ul>
-                    </li>
+                    </a>
+                @endif
+                <ul class="dropdown-menu">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="profile">Profile</a></li>
+                    <li><a href="katalaluan">Kata Laluan</a></li>
+                    <li><a href="{{url('logout')}}">Logout</a></li>
                 </ul>
+                </li>
+            </ul>
         </div>
 
     </div><!-- /.container-fluid -->
@@ -108,7 +109,7 @@
     @yield('content')
 </div>
 
-    @yield('modal')
+@yield('modal')
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -120,7 +121,7 @@
 <script src="{{ URL::asset('js/Chart.min.js')}}"></script>
 <script src="{{ URL::asset('js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{ URL::asset('js/pace.min.js')}}"></script>
-{{--<script src="js/bootstrap.min.js"></script>--}}
+<script src="{{ URL::asset('js/jqClock.min.js')}}"></script>
 </body>
 </html>
 
@@ -134,50 +135,6 @@
         });
 //      cool alert message function
 //      swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
-
-        //check Laravel for session expiry
-        setInterval(function(){
-            check_session()
-        }, 5000);
-
-        function check_session()
-        {
-            $.ajax
-            ({
-                type: "GET",
-                url: base_url + '/check_session',
-                dataType: "json",
-                data:
-                {
-
-                },
-                beforeSend: function()
-                {
-                    //////////////////////////////
-                },
-                success: function (check_data)
-                {
-                    if (!check_data.logged_in)
-                    {
-//                        alert('Session expired. Please Re-login to continue');
-                        swal({   title: "Sesi tamat",
-                            text: "Sila login semula untuk terus mengguna sistem",
-                            type: "error",
-                            showCancelButton: false,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "OK",
-                            closeOnConfirm: false,
-                            closeOnCancel: false },
-
-                                function(isConfirm)
-                                {
-                                    location.reload();
-                                });
-
-                    }
-                }
-            });
-        }
     });
 </script>
 

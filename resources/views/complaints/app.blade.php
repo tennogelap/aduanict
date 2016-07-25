@@ -39,10 +39,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">Tambah Aduan</a>
+                        <a href="{{route('complain.create')}}">Tambah Aduan</a>
                     </li>
                     <li class="active">
-                        <a href="#">
+                        <a href="{{url('complain')}}">
                             Senarai Aduan
                         </a>
                     </li>

@@ -186,4 +186,7 @@
             };
         });
     </script>
+
+            @include('complaints.partials.form_script')
+
 @endsection

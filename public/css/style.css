@@ -1,4 +1,5 @@
-body{
+body
+{
     padding-top: 90px;
 }
 .symbol
@@ -17,17 +18,20 @@ body{
 {
     display:none;
 }
-@media (max-width: 425px) {
+@media (max-width: 425px)
+{
 
-    .form-control-static {
+    .form-control-static
+    {
         padding-top: 0;
         text-overflow: ellipsis;
         overflow: hidden;
         width: 100%;
         white-space: nowrap;
-    .screenlogin {
-        width: 50%;
-    }
+        .screenlogin
+        {
+            width: 50%;
+        }
     }
 
 }

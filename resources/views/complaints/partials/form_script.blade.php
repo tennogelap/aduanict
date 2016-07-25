@@ -68,13 +68,15 @@
             var exp_complain_category_id = complain_category_id.split('-');
             complain_category_id = exp_complain_category_id[0];
 
-//                console.log(complain_category_id);
+            //console.log(complain_category_id);
             if(complain_category_id==5||complain_category_id==6)
             {
+//                console.log('hide');
                 $('.hide_by_category').hide();
             }
             else
             {
+//                console.log('show');
                 $('.hide_by_category').show();
             }
             //when validation error after processing form, reinitialize
@@ -145,5 +147,37 @@
             });
 
         }
+
+        //to test add rows to tables dinamically like CimbClicks pay bills
+        function addTableRow(){
+            var newRow = document.all("mytable").insertRow(-1);
+            var cell = newRow.insertCell(-1);
+            cell.innerHTML = "<input type='hidden' id='mydata' value='hello'>";
+        }
     });
+//    Test-Dinamic add rows
+    var i=0;
+
+    $("#add_row").click(function(){
+        $xStr="<td>"+ (i+1) ;
+        $xStr= $xStr+"</td><td><input name='name"+i+"' type='text' placeholder='Name' class='form-control input-md' value="+$('#xname').val() +" />";
+        $xStr= $xStr+"</td><td><input name='mail"+i+"' type='text' placeholder='Mail' class='form-control input-md' value="+$('#xmail').val()+" /></td><td><input name='mobile"+i+"' type='text' placeholder='Mobile' class='form-control input-md' value="+$('#xmobile').val()+" /></td>";
+
+
+        $('#addr'+i).html($xStr);
+
+        $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+        i++;
+        /*document.getElementById("xname").value = "";
+        document.getElementById("xmail").value = "";
+        document.getElementById("xmobile").value = "";*/
+    });
+
+    $("#delete_row").click(function(){
+        if(i>1){
+            $("#addr"+(i-1)).html('');
+            i--;
+        }
+    });
+//    Test
 </script>

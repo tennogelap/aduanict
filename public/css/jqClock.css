@@ -1,0 +1,4 @@
+/* SAMPLE CSS STYLES FOR JQUERY CLOCK PLUGIN */
+  .jqclock { background: white; margin-top: 7px;}
+  .clockdate { color: DarkRed; margin-right: 10px; }
+  .clocktime {  background: white; color: black; }

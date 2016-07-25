@@ -24,6 +24,9 @@ class ComplainRequest extends Request
     public function rules()
     {
         $route_name = $this->route()->getName();
+        $aduan_category_exception_value = array('5','6');
+        $complain_category_id_exp = explode('-',$this->complain_category_id);
+        $complain_category_id = $complain_category_id_exp[0];
         /*  Method POST - validation bagi CREATE
             Method PUT - validation bagi UPDATE
         */
@@ -35,7 +38,7 @@ class ComplainRequest extends Request
                                               'complain_description' => 'required',
                                               'complain_attachment' => 'mimes:jpeg,jpg,bmp,png,pdf,doc,docx,txt,zip,rar');
                     //exclude Zakat2U and Portal from required validation
-                    $aduan_category_exception_value = array('5','6');
+                    //$aduan_category_exception_value = array('5','6');
 
                     //set required fields
                     $others_field_validation = array(
@@ -44,8 +47,8 @@ class ComplainRequest extends Request
                                                     'ict_no'=>'required'
                                                     );
 
-                    $complain_category_id_exp = explode('-',$this->complain_category_id);
-                    $complain_category_id = $complain_category_id_exp[0];
+                    /*$complain_category_id_exp = explode('-',$this->complain_category_id);
+                    $complain_category_id = $complain_category_id_exp[0];*/
 
                     //check complain_category_id Not in $aduan_category_exception_value
                     //in_array(field_name, array)
@@ -60,15 +63,21 @@ class ComplainRequest extends Request
                 {
                     if($route_name=='complain.update') {
                         //kemaskini validation rules
-                        $validation_rules = array(
+                        $validation_rules = [];
+                        $others_field_validation = array(
                             'complain_category_id'=>'required',
                             'lokasi_id' => 'required',
                             'ict_no' => 'required');
 
                         if($this->exclude_category=='Y')
                         {
-                            array_pull($validation_rules,'complain_category_id');
+                            array_pull($others_field_validation,'complain_category_id');
                         }
+                        if(!in_array($complain_category_id,$aduan_category_exception_value))
+                        {
+                            $validation_rules = $others_field_validation;
+                        }
+
                         /* remove item from array
                          * array_pull(array_name, value_name) .. e.g:
                          * array_pull($validation_rules,'complain_category_id');
@@ -103,7 +112,7 @@ class ComplainRequest extends Request
             'complain_source_id.required' => 'Kaedah adalah mandatori',
             'complain_description.required' => 'Aduan adalah mandatori',
             'action_comment.required' => 'Tindakan adalah mandatori',
-            'complain_attachment.mimes' => 'Apih terer ngat ekpong.... ni jah buleh upload->jpeg,bmp,png,pdf,doc,docx,txt,zip,rar'
+            'complain_attachment.mimes' => 'Apih terer ngat ekpong.... ni jah buleh upload->jpeg,jpg,bmp,png,pdf,doc,docx,txt,zip,rar'
         ];
     }
 }

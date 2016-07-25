@@ -152,16 +152,20 @@ class ComplainController extends BaseController
         //chk if has file attachment
         if($request->hasFile('complain_attachment') && $request->file('complain_attachment')->isValid())
         {   //rename file to make it unique
-            $fileName = $complain->complain_id.'_'.$request->file('complain_attachment')->getClientOriginalName();
+            $fileName = $complain->complain_id.'_'.strtolower($request->file('complain_attachment')->getClientOriginalName());
             //set destination path
             $destinationPath = base_path().'/public/uploads/';
             //move/upload file
             $request->file('complain_attachment')->move($destinationPath, $fileName);
 
             $complain_attachment = new ComplainAttachment();
-            $complain_attachment->attachable_id=$complain->complain_id;
+            $complain_attachment->attachable_id=number_format($complain->complain_id);
             $complain_attachment->attachable_type='App\Complain';
             $complain_attachment->attachment_filename=$fileName;
+            //here
+            $ext_explode = explode('.',$fileName);
+            $complain_attachment->attachment_ext=$ext_explode[1];
+
             $complain_attachment->created_at=date("Y-m-d");
 
             $complain_attachment->save();
@@ -389,6 +393,28 @@ class ComplainController extends BaseController
         $complain->fill($input);
         //save
         $complain->save();
+        //dd($request->file('complain_attachment'));
+        if($request->hasFile('complain_attachment') && $request->file('complain_attachment')->isValid())
+        {
+            //rename file to make it unique
+            $fileName = $complain->complain_id.'_'.strtolower($request->file('complain_attachment')
+                                                                      ->getClientOriginalName());
+            //set destination path
+            $destinationPath = base_path().'/public/uploads/';
+            //move/upload file
+            $request->file('complain_attachment')->move($destinationPath, $fileName);
+
+            $complain_attachment = new ComplainAttachment();
+            $complain_attachment->attachable_id=number_format($complain->complain_id);
+            $complain_attachment->attachable_type='App\Complain';
+            $complain_attachment->attachment_filename=$fileName;
+            $ext_explode = explode('.',$fileName);
+            $complain_attachment->attachment_ext=$ext_explode[1];
+
+            $complain_attachment->created_at=date("Y-m-d");
+
+            $complain_attachment->save();
+        }
 
         //after success, message and route to index
         Flash::success('Berjaya dikemaskinikan');
