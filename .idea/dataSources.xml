@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="4112064919">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="OracleStaging" uuid="c9d099b1-0d2c-447b-adc9-1ad2183d4594">
       <driver-ref>oracle</driver-ref>
       <auto-commit>false</auto-commit>
