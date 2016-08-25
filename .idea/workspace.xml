@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7053ae7a-2f24-4cb3-995b-2a3e5c32169f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/app.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/config/database.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/complaints/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/complaints/create.blade.php" />
-    </list>
+    <list default="true" id="7053ae7a-2f24-4cb3-995b-2a3e5c32169f" name="Default" comment="" />
     <ignored path="aduanict.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -452,12 +445,12 @@
       <workItem from="1471937360783" duration="1199000" />
       <workItem from="1471996335160" duration="596000" />
       <workItem from="1472002393347" duration="618000" />
-      <workItem from="1472092100354" duration="55000" />
+      <workItem from="1472092100354" duration="128000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="427115000" />
+    <option name="totallyTimeSpent" value="427188000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
