@@ -135,47 +135,47 @@
                                 </table>
                                 </div>
                         </div>
-                        <div class="container">
-                            <a id="add_row" class="btn btn-default pull-left">Add Row</a>
-                            <div class="row clearfix">
-                                <table class="table table-bordered table-hover" id="tab_logic" name="tab_logic">
-                                    <thead>
-                                    <tr >
-                                        <th class="text-center">
-                                            #
-                                        </th>
-                                        <th class="text-center">
-                                            Name
-                                        </th>
-                                        <th class="text-center">
-                                            Mail
-                                        </th>
-                                        <th class="text-center">
-                                            Mobile
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {{--<tr id='addr0' type="hidden">
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            <input type="text" name='name0'  placeholder='Name' class="form-control"/>
-                                        </td>
-                                        <td>
-                                            <input type="text" name='mail0' placeholder='Mail' class="form-control"/>
-                                        </td>
-                                        <td>
-                                            <input type="text" name='mobile0' placeholder='Mobile' class="form-control"/>
-                                        </td>
-                                    </tr>
-                                    <tr id='addr1'></tr>--}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <a id='delete_row' class="pull-right btn btn-default">Delete Row</a>
+                        {{--<div class="container">--}}
+                            {{--<a id="add_row" class="btn btn-default pull-left">Add Row</a>--}}
+                            {{--<div class="row clearfix">--}}
+                                {{--<table class="table table-bordered table-hover" id="tab_logic" name="tab_logic">--}}
+                                    {{--<thead>--}}
+                                    {{--<tr >--}}
+                                        {{--<th class="text-center">--}}
+                                            {{--#--}}
+                                        {{--</th>--}}
+                                        {{--<th class="text-center">--}}
+                                            {{--Name--}}
+                                        {{--</th>--}}
+                                        {{--<th class="text-center">--}}
+                                            {{--Mail--}}
+                                        {{--</th>--}}
+                                        {{--<th class="text-center">--}}
+                                            {{--Mobile--}}
+                                        {{--</th>--}}
+                                    {{--</tr>--}}
+                                    {{--</thead>--}}
+                                    {{--<tbody>--}}
+                                    {{--<tr id='addr0' type="hidden">--}}
+                                        {{--<td>--}}
+                                            {{--1--}}
+                                        {{--</td>--}}
+                                        {{--<td>--}}
+                                            {{--<input type="text" name='name0'  placeholder='Name' class="form-control"/>--}}
+                                        {{--</td>--}}
+                                        {{--<td>--}}
+                                            {{--<input type="text" name='mail0' placeholder='Mail' class="form-control"/>--}}
+                                        {{--</td>--}}
+                                        {{--<td>--}}
+                                            {{--<input type="text" name='mobile0' placeholder='Mobile' class="form-control"/>--}}
+                                        {{--</td>--}}
+                                    {{--</tr>--}}
+                                    {{--<tr id='addr1'></tr>--}}
+                                    {{--</tbody>--}}
+                                {{--</table>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<a id='delete_row' class="pull-right btn btn-default">Delete Row</a>--}}
                     </div>
                 {{--Test--}}
                     <div class="form-group">
