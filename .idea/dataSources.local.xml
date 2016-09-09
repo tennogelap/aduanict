@@ -2,7 +2,6 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="OracleStaging" uuid="c9d099b1-0d2c-447b-adc9-1ad2183d4594">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
       <secret-storage>master_key</secret-storage>
       <user-name>ppzdev</user-name>
     </data-source>

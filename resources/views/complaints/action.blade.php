@@ -3,6 +3,7 @@
     @include('layouts.alert_message')
 
     {{--include exit from--}}
+    <?php /*dd($complain->complain_status_id); */?>
     @if($complain->complain_status_id<=2)
         @include('complaints.partials.edit_form',['exclude_category'=>'N'])
     @endif
@@ -107,7 +108,7 @@
             <div class="panel panel-info">
                 <div class="panel-body">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Tarikh </label>
+                    <label class="col-sm-2 control-label">Tarikh</label>
                     <div class="col-sm-2">
                         {{--<p class="form-control-static">{{$complain->assign_date}}</p>--}}
                         <p class="form-control-static"><?php echo date('d/m/y H:i:s');?></p>
@@ -130,7 +131,8 @@
                         <span class="pull-left symbol"> * </span>
                     </label>
                 </div>
-                <div class="form-group hide_by_category">
+                {{--<div class="form-group hide_by_category">--}}
+                <div class="form-group">
                     <label class="col-sm-2 col-xs-12 control-label">Tindakan</label>
                     <div class="col-sm-6 col-xs-10">
                         <textarea class="form-control" rows="3" name="action_comment">{{old('action_comment',$complain->action_comment)}}</textarea>
@@ -140,7 +142,8 @@
                         <span class="pull-left symbol"> * </span>
                     </label>
                 </div>
-                <div class="form-group hide_by_category">
+                {{--<div class="form-group hide_by_category">--}}
+                <div class="form-group">
                     <label class="col-sm-2 col-xs-12 control-label">Sebab Lewat</label>
                     <div class="col-sm-6 col-xs-10">
                         <textarea class="form-control" rows="3" name="helpdesk_delay_reason">{{$complain->helpdesk_delay_reason}}</textarea>

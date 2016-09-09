@@ -61,9 +61,10 @@ class ComplainRequest extends Request
                 }
             case 'PUT':
                 {
+                    $validation_rules = [];
                     if($route_name=='complain.update') {
                         //kemaskini validation rules
-                        $validation_rules = [];
+
                         $others_field_validation = array(
                             'complain_category_id'=>'required',
                             'lokasi_id' => 'required',
