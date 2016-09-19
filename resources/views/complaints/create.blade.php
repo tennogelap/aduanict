@@ -33,20 +33,18 @@
                             <input type="hidden" name="register_user_id" value="{{ Auth::user()->emp_id }}"/>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="checkbox ">
-                            <div class="col-sm-2">Bagi Pihak
-                                <label class="col-sm-12 col-xs-2 control-label">
-                                    {{ Form::checkbox('bagi_pihak', 'Y',false,['id'=>"bagi_pihak"]) }} Ya
-                                </label>
-                            </div>
-                        </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Bagi Pihak </label>
+                    <div class="col-xs-1">
+                        {{ Form::checkbox('bagi_pihak', 'Y',false,['id'=>"bagi_pihak"]) }} Ya
+                    </div>
+
                         <div class="col-sm-3 hide_div" id="pilih_bagi_pihak">
                             <div class="input-group">
                                 {!! Form::select('user_emp_id',$users,'user_emp_id',['class'=> 'form-control','id'=>'user_emp_id'])!!}
                             </div><!-- /input-group -->
                         </div>
-                    </div>
+                </div>
                 <div class="form-group {{$errors->has('complain_category_id') ? 'has-error' : false}}">
                         <label class="col-sm-2 col-xs-12 control-label">Kategori<span class="symbol"> * </span>                        </label>
                         <div class="col-sm-3 col-xs-10">
@@ -85,7 +83,7 @@
                         </div>
                     </div>
                     <div class="form-group {{$errors->has('complain_attachment') ? 'has-error' : false}}">
-                        <label class="col-sm-2 control-label">Muatnaik Gambar / Fail</label>
+                        <label class="col-sm-2 control-label">Muatnaik Gambar<br>/ Fail</label>
                         <div class="col-sm-6">
                             {{--<table class="table table-bordered" id='mytable'>
                                 {!! Form::file('complain_attachment') !!}
@@ -96,7 +94,7 @@
                     </div>
                 {{--Test--}}
                     <div class="container">
-                        <div class="row clearfixHeader">
+                       {{-- <div class="row clearfixHeader">
                             <div class="col-md-12 column">
                                 <table class="table table-bordered table-hover" id="tab_logicHeader" name="tab_logicHeader">
                                     <thead>
@@ -134,7 +132,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                        </div>
+                        </div>--}}
                         {{--<div class="container">--}}
                             {{--<a id="add_row" class="btn btn-default pull-left">Add Row</a>--}}
                             {{--<div class="row clearfix">--}}

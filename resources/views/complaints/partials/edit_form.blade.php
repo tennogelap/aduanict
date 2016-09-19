@@ -111,14 +111,12 @@
                     @endforeach
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="row"><br><br>
-                    <label class="col-sm-2 control-label">Muatnaik Gambar / Fail</label>
-                    <div class="form-group {{$errors->has('complain_attachment') ? 'has-error' : false}}">
-                        <div class="col-sm-6">
-                            {!! Form::file('complain_attachment') !!}
-                        </div>
-                    </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Muatnaik Gambar <br>/ Fail</label>
+            <div class="form-group {{$errors->has('complain_attachment') ? 'has-error' : false}}">
+                <div class="col-sm-6">
+                    {!! Form::file('complain_attachment') !!}
                 </div>
             </div>
         </div>
