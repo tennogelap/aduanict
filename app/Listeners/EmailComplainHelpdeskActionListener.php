@@ -54,8 +54,8 @@ class EmailComplainHelpdeskActionListener
             //get nama ketua unit
             //$RcptEmailName = $event->complain->onBehalf_fk->name;
             //$emailKetuaUnit = $event->complain->complain_unit_fk->ketuaUnit_fk->empMaster_fk->email;
-            $RcptEmailAdd1 = $event->complain->complain_unit_fk->ketuaUnit_fk->empMaster_fk->email;
-            dd($RcptEmailAdd1);
+            //$RcptEmailAdd1 = $event->complain->complain_unit_fk->ketuaUnit_fk->empMaster_fk->email;
+//            dd($RcptEmailAdd1);
             //$RcptEmailAdd1 = 'firdaus_aziz@zakat.com.my';
 
             $rcptname1 = $event->complain->complain_unit_fk->ketuaUnit_fk->name;
@@ -67,7 +67,7 @@ class EmailComplainHelpdeskActionListener
 
             $RcptEmailAdd = array($RcptEmailAdd1,$RcptEmailAdd2);
             $rcptname = array($rcptname1,$rcptname2);
-
+            
 
             //$rcptname = $event->complain->onBehalf_fk->name;
             $emailbladename = 'email.complain_helpdesk_close';

@@ -249,7 +249,9 @@ class ComplainController extends BaseController
         //complain category list/dropdown
         $complain_categories = $this->get_complain_categories();
         $complain = Complain::find($id);
-        $statuses = ComplainStatus::lists('description', 'status_id');
+        $statuses = ComplainStatus::where('status_id','3')
+                                    ->orWhere('status_id','7')
+                                    ->lists('description', 'status_id');
         $units = Unit::lists('butiran', 'kod');
         $complain_actions=$this->get_complain_actions($id);
         //complain sources list/dropdown
@@ -287,8 +289,7 @@ class ComplainController extends BaseController
         $complain_categories = $this->get_complain_categories();
         $complain = Complain::find($id);
         //status 'Tindakan' @ 'Sahkan (P)' sahaja
-        $statuses = ComplainStatus::where('status_id','2')
-                                    ->orWhere('status_id','3')
+        $statuses = ComplainStatus::where('status_id','3')
                                     ->lists('description', 'status_id');
 
         $units = Unit::lists('butiran', 'kod');
@@ -526,6 +527,8 @@ class ComplainController extends BaseController
         $complain->delete();
 
         //after success, route to index
+        Flash::success('Aduan telah dihapuskan.');
+
         return back();
     }
     public function assign()

@@ -6,4 +6,6 @@
 
     @include('complaints.partials.complain_action_log')
 
+      <a href="{{route('complain.index')}}" type="submit" class="btn btn-default">Kembali</a>
+
 @endsection
