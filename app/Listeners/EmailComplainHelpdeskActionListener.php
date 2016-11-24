@@ -31,7 +31,7 @@ class EmailComplainHelpdeskActionListener
         //dapatkan nama pengadu
         $sender = 'ICT Helpdesk';
         //dapatkan emel pengadu
-        $senderemailadd = 'icthelpdesk@zakat.com.my';
+        $senderemailadd = 'nargis@zakat.com.my';
         //dapatkan ID aduan
         $complain_id = $event->complain->complain_id;
         //dapatkan maklumat aduan
@@ -42,7 +42,7 @@ class EmailComplainHelpdeskActionListener
         if ($status_complain==3) // hantar email kepada pengadu untuk pengesahan
         {
             //$RcptEmailName = $event->complain->onBehalf_fk->name;
-            $RcptEmailAdd = 'firdaus_aziz@zakat.com.my';
+            $RcptEmailAdd = 'nargis@zakat.com.my';
             $rcptname = $event->complain->onBehalf_fk->name;
             $hSubject   = 'Pengesahan Aduan';
             //get email pengadu
@@ -56,13 +56,13 @@ class EmailComplainHelpdeskActionListener
             //$emailKetuaUnit = $event->complain->complain_unit_fk->ketuaUnit_fk->empMaster_fk->email;
             //$RcptEmailAdd1 = $event->complain->complain_unit_fk->ketuaUnit_fk->empMaster_fk->email;
 //            dd($RcptEmailAdd1);
-            //$RcptEmailAdd1 = 'firdaus_aziz@zakat.com.my';
+            //$RcptEmailAdd1 = 'nargis@zakat.com.my';
 
             $rcptname1 = $event->complain->complain_unit_fk->ketuaUnit_fk->name;
 
             //get email pengadu
             $RcptEmailAdd2 = $event->complain->onBehalf_fk->email;
-            //$RcptEmailAdd2 = 'firdaus_aziz@zakat.com.my';
+            //$RcptEmailAdd2 = 'nargis@zakat.com.my';
             $rcptname2 = $event->complain->onBehalf_fk->name;
 
             $RcptEmailAdd = array($RcptEmailAdd1,$RcptEmailAdd2);
@@ -79,8 +79,8 @@ class EmailComplainHelpdeskActionListener
             //$RcptEmailName =  $event->complain->complain_unit_fk->emp_id_ketua;
             //get email ketua unit
             //$RcptEmailAdd = $event->complain->onBehalf_fk->email;
-            $rcptname = 'Firdaus Abdul Aziz @ Ahmad';
-            $RcptEmailAdd = 'firdaus_aziz@zakat.com.my';
+            $rcptname = 'Nargis Ismail';
+            $RcptEmailAdd = 'nargis@zakat.com.my';
             $emailbladename = 'email.complain_helpdesk_assign';
             $hSubject   = 'Terdapat aduan untuk diagihkan.';
         }

@@ -39,7 +39,7 @@ class EmailComplainCreatedListener
         $status_complain = 'Baru';
 //        $status_complain = $event->complain->complain_status_fk->description;
 
-        $RcptEmailAdd = 'firdaus_aziz@zakat.com.my';
+        $RcptEmailAdd = 'nargis@zakat.com.my';
 //        $RcptEmailAdd = 'icthelpdesk@zakat.com.my';
 
         $data = [

@@ -11,7 +11,7 @@
                 {{--<div class="panel-heading">Welcome</div>--}}
 
                 <div class="panel-body">
-                    Selamat Datang ke Sistem Aduan ICT. Sila Login @ daftar.
+                    Selamat Datang ke Sistem Aduan ICT. Sila Login @ daftar. test
                 </div>
             </div>
         </div>

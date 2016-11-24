@@ -45,7 +45,7 @@ class EmailComplainUserVerifyListener
         {
             //$RcptEmailName = $event->complain->onBehalf_fk->name;
             $rcptname = $event->complain->action_user_fk->name;
-            $RcptEmailAdd = 'firdaus_aziz@zakat.com.my';
+            $RcptEmailAdd = 'nargis@zakat.com.my';
             $hSubject   = 'Pengesahan Penyelesaian: Gagal';
             //get email pengadu
             //$RcptEmailAdd = $event->complain->onBehalf_fk->email;
@@ -54,7 +54,7 @@ class EmailComplainUserVerifyListener
         elseif ($status_complain==4) //email ke Helpdesk untuk tutup aduan
         {
             //Helpdesk details
-            $RcptEmailAdd = 'icthelpdesk@zakat.com.my';
+            $RcptEmailAdd = 'nargis@zakat.com.my';
             $rcptname = 'ICT Helpdesk';
 
 
